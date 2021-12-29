@@ -31,6 +31,16 @@
           <Property Name="CountryId" Type="int" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
+        <EntityType Name="DeviceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="500" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DateModified" Type="datetime" />
+        </EntityType>
         <EntityType Name="Item">
           <Key>
             <PropertyRef Name="Id" />
@@ -95,6 +105,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Item_DeviceType">
+          <End Role="DeviceType" Type="Self.DeviceType" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeviceType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="DeviceTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Item_ItemLog">
           <End Role="ItemLog" Type="Self.ItemLog" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -139,12 +163,17 @@
         </Association>
         <EntityContainer Name="InventoryPortalModelStoreContainer">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceType" EntityType="Self.DeviceType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemLog" EntityType="Self.ItemLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Item_AspNetUsers" Association="Self.FK_Item_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_DeviceType" Association="Self.FK_Item_DeviceType">
+            <End Role="DeviceType" EntitySet="DeviceType" />
             <End Role="Item" EntitySet="Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Item_ItemLog" Association="Self.FK_Item_ItemLog">
@@ -216,6 +245,7 @@
           <NavigationProperty Name="ItemLog" Relationship="Self.FK_Item_ItemLog" FromRole="Item" ToRole="ItemLog" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Item_Location" FromRole="Item" ToRole="Location" />
           <NavigationProperty Name="Status" Relationship="Self.FK_Item_Status" FromRole="Item" ToRole="Status" />
+          <NavigationProperty Name="DeviceType" Relationship="InventoryPortalModel.FK_Item_DeviceType" FromRole="Item" ToRole="DeviceType" />
         </EntityType>
         <EntityType Name="ItemLog">
           <Key>
@@ -326,7 +356,37 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="Item" EntitySet="Items" />
           </AssociationSet>
+          <EntitySet Name="DeviceTypes" EntityType="InventoryPortalModel.DeviceType" />
+          <AssociationSet Name="FK_Item_DeviceType" Association="InventoryPortalModel.FK_Item_DeviceType">
+            <End Role="DeviceType" EntitySet="DeviceTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DeviceType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Items" Relationship="InventoryPortalModel.FK_Item_DeviceType" FromRole="DeviceType" ToRole="Item" />
+        </EntityType>
+        <Association Name="FK_Item_DeviceType">
+          <End Type="InventoryPortalModel.DeviceType" Role="DeviceType" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InventoryPortalModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeviceType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="DeviceTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -411,6 +471,17 @@
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceTypes">
+            <EntityTypeMapping TypeName="InventoryPortalModel.DeviceType">
+              <MappingFragment StoreEntitySet="DeviceType">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

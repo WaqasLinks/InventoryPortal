@@ -58,7 +58,8 @@
         <div class="form-group">
           @Html.LabelFor(model => model.DeviceTypeId, htmlAttributes: new { @class = "" })
 
-          @Html.EditorFor(model => model.DeviceTypeId, new { htmlAttributes = new { @class = "form-control" } })
+          @*@Html.EditorFor(model => model.DeviceTypeId, new { htmlAttributes = new { @class = "form-control" } })*@
+          @Html.DropDownList("DeviceTypeId", null, htmlAttributes: new { @class = "form-control" })
           @Html.ValidationMessageFor(model => model.DeviceTypeId, "", new { @class = "text-danger" })
 
         </div>
@@ -123,6 +124,9 @@
           @Html.LabelFor(model => model.Racked, htmlAttributes: new { @class = "" })
 
           <div class="checkbox">
+            @{ 
+                Model.Racked
+            }
             @Html.EditorFor(model => model.Racked)
             @Html.ValidationMessageFor(model => model.Racked, "", new { @class = "text-danger" })
           </div>

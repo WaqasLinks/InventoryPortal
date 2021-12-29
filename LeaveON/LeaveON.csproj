@@ -232,8 +232,10 @@
     <Compile Include="Controllers\AspNetUsersController.cs" />
     <Compile Include="Controllers\BaseDailyController.cs" />
     <Compile Include="Controllers\BaseHistoricalsController.cs" />
+    <Compile Include="Controllers\DeviceTypesController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2281,6 +2283,16 @@
     <Content Include="Views\Items\Details.cshtml" />
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
+    <Content Include="Views\Locations\Create.cshtml" />
+    <Content Include="Views\Locations\Delete.cshtml" />
+    <Content Include="Views\Locations\Details.cshtml" />
+    <Content Include="Views\Locations\Edit.cshtml" />
+    <Content Include="Views\Locations\Index.cshtml" />
+    <Content Include="Views\DeviceTypes\Create.cshtml" />
+    <Content Include="Views\DeviceTypes\Delete.cshtml" />
+    <Content Include="Views\DeviceTypes\Details.cshtml" />
+    <Content Include="Views\DeviceTypes\Edit.cshtml" />
+    <Content Include="Views\DeviceTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\SelectWeakListHtmlHelper\" />

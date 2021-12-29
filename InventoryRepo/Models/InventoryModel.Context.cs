@@ -30,5 +30,6 @@ namespace InventoryRepo.Models
         public virtual DbSet<ItemLog> ItemLogs { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<DeviceType> DeviceTypes { get; set; }
     }
 }

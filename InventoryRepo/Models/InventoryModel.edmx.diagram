@@ -14,6 +14,8 @@
         <AssociationConnector Association="InventoryPortalModel.FK_Item_ItemLog" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryPortalModel.FK_Item_Location" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryPortalModel.FK_Item_Status" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="InventoryPortalModel.DeviceType" Width="1.5" PointX="0.75" PointY="16.625" />
+        <AssociationConnector Association="InventoryPortalModel.FK_Item_DeviceType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

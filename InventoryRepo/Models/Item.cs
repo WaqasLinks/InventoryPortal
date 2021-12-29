@@ -36,5 +36,6 @@ namespace InventoryRepo.Models
         public virtual ItemLog ItemLog { get; set; }
         public virtual Location Location { get; set; }
         public virtual Status Status { get; set; }
+        public virtual DeviceType DeviceType { get; set; }
     }
 }

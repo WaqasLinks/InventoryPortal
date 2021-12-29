@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -18,7 +18,7 @@ namespace LeaveON.Controllers
         // GET: Items
         public async Task<ActionResult> Index()
         {
-            var items = db.Items.Include(i => i.AspNetUser).Include(i => i.ItemLog).Include(i => i.Location).Include(i => i.Status);
+            var items = db.Items.Include(i => i.AspNetUser).Include(i => i.DeviceType).Include(i => i.ItemLog).Include(i => i.Location).Include(i => i.Status);
             return View(await items.ToListAsync());
         }
 
@@ -41,6 +41,7 @@ namespace LeaveON.Controllers
         public ActionResult Create()
         {
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Hometown");
+            ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type");
             ViewBag.ItemLogId = new SelectList(db.ItemLogs, "Id", "Description");
             ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName");
             ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName");
@@ -62,6 +63,7 @@ namespace LeaveON.Controllers
             }
 
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Hometown", item.AspNetUserId);
+            ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type");
             ViewBag.ItemLogId = new SelectList(db.ItemLogs, "Id", "Description", item.ItemLogId);
             ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName", item.LocationId);
             ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName", item.StatusId);
@@ -81,6 +83,7 @@ namespace LeaveON.Controllers
                 return HttpNotFound();
             }
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Hometown", item.AspNetUserId);
+            ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type");
             ViewBag.ItemLogId = new SelectList(db.ItemLogs, "Id", "Description", item.ItemLogId);
             ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName", item.LocationId);
             ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName", item.StatusId);
@@ -101,6 +104,7 @@ namespace LeaveON.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Hometown", item.AspNetUserId);
+            ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type");
             ViewBag.ItemLogId = new SelectList(db.ItemLogs, "Id", "Description", item.ItemLogId);
             ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName", item.LocationId);
             ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName", item.StatusId);
