@@ -51,7 +51,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Models\AspNetRole.cs">
+      <DependentUpon>InventoryModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AspNetUser.cs">
+      <DependentUpon>InventoryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserClaim.cs">
+      <DependentUpon>InventoryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>InventoryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DeviceType.cs">

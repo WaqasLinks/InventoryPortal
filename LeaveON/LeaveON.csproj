@@ -230,8 +230,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AspNetUserClaimsController.cs" />
     <Compile Include="Controllers\AspNetUsersController.cs" />
-    <Compile Include="Controllers\BaseDailyController.cs" />
-    <Compile Include="Controllers\BaseHistoricalsController.cs" />
     <Compile Include="Controllers\DeviceTypesController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ItemLogsController.cs" />
@@ -278,6 +276,8 @@
       <DependentUpon>202011230802383_IsActive added and depId, CtryId nullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ActivityLogViewModel.cs" />
+    <Compile Include="Models\AspNetUser2.cs" />
     <Compile Include="Models\AspNetUsersViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseDaily2.cs" />
@@ -2225,6 +2225,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\sammy-0.7.5.js" />
     <Content Include="Scripts\sammy-0.7.5.min.js" />
+    <Content Include="Views\DeviceTypes\Delete.cshtml" />
+    <Content Include="Views\Items\Delete.cshtml" />
+    <Content Include="Views\Locations\Delete.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -2270,34 +2273,15 @@
     <Content Include="Views\Shared\Error404.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\AspNetUsers\ResetPassword.cshtml" />
-    <Content Include="Views\BaseDaily\_SearchDNC.cshtml" />
-    <Content Include="Views\BaseDaily\SearchDNC.cshtml" />
-    <Content Include="Views\BaseDaily\Upload.cshtml" />
-    <Content Include="Views\BaseHistoricals\Create.cshtml" />
-    <Content Include="Views\BaseHistoricals\Delete.cshtml" />
-    <Content Include="Views\BaseHistoricals\Details.cshtml" />
-    <Content Include="Views\BaseHistoricals\Edit.cshtml" />
-    <Content Include="Views\BaseHistoricals\Index.cshtml" />
-    <Content Include="Views\BaseDaily\DNCSearch.cshtml" />
     <Content Include="Views\Items\Create.cshtml" />
-    <Content Include="Views\Items\Delete.cshtml" />
-    <Content Include="Views\Items\Details.cshtml" />
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Locations\Create.cshtml" />
-    <Content Include="Views\Locations\Delete.cshtml" />
-    <Content Include="Views\Locations\Details.cshtml" />
     <Content Include="Views\Locations\Edit.cshtml" />
     <Content Include="Views\Locations\Index.cshtml" />
     <Content Include="Views\DeviceTypes\Create.cshtml" />
-    <Content Include="Views\DeviceTypes\Delete.cshtml" />
-    <Content Include="Views\DeviceTypes\Details.cshtml" />
     <Content Include="Views\DeviceTypes\Edit.cshtml" />
     <Content Include="Views\DeviceTypes\Index.cshtml" />
-    <Content Include="Views\ItemLogs\Create.cshtml" />
-    <Content Include="Views\ItemLogs\Delete.cshtml" />
-    <Content Include="Views\ItemLogs\Details.cshtml" />
-    <Content Include="Views\ItemLogs\Edit.cshtml" />
     <Content Include="Views\ItemLogs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -2365,10 +2349,6 @@
     <ProjectReference Include="..\InventoryRepo\InventoryRepo.csproj">
       <Project>{08ae1ed2-3a61-4ad4-bac1-b5854dbc6f72}</Project>
       <Name>InventoryRepo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\jsaosorio\jsaosorio.csproj">
-      <Project>{D2EFD2E8-1543-41DF-9EE9-358508F16AEB}</Project>
-      <Name>jsaosorio</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -17,6 +17,12 @@
         <AssociationConnector Association="InventoryPortalModel.FK_Item_Location" />
         <AssociationConnector Association="InventoryPortalModel.FK_Item_Status" />
         <AssociationConnector Association="InventoryPortalModel.FK_ItemLog_Item" />
+        <EntityTypeShape EntityType="InventoryPortalModel.AspNetRole" Width="1.5" PointX="0.75" PointY="17.375" />
+        <EntityTypeShape EntityType="InventoryPortalModel.AspNetUserClaim" Width="1.5" PointX="3" PointY="10.375" />
+        <EntityTypeShape EntityType="InventoryPortalModel.AspNetUserLogin" Width="1.5" PointX="3" PointY="7.875" />
+        <AssociationConnector Association="InventoryPortalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="InventoryPortalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="InventoryPortalModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

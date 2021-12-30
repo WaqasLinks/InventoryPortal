@@ -31,5 +31,8 @@ namespace InventoryRepo.Models
         public virtual DbSet<ItemLog> ItemLogs { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
     }
 }

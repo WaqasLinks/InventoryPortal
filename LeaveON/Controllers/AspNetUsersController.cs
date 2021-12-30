@@ -11,25 +11,33 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using LeaveON.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
-using jsaosorio.Models;
+using InventoryRepo.Models;
 
 namespace LeaveON.Controllers
 {
 
-  [Authorize(Roles = "Admin,Manager")]
+  [Authorize(Roles = "Admin")]
   public class AspNetUsersController : Controller
   {
     //private LeaveONEntities db = new LeaveONEntities();
-    private jsaosorioEntities db = new jsaosorioEntities();
-
+    //private jsaosorioEntities db = new jsaosorioEntities();
+    private InventoryPortalEntities db = new InventoryPortalEntities();
     // GET: AspNetUsers
-    public async Task<ActionResult> Index()
+    public ActionResult Index()
     {
-      var ab = db.AspNetUsers.Count();
-      var aspNetUsers = db.AspNetUsers;//.Include(a => a.Department);
+      //var ab = db.AspNetUsers.Count();
+      //List<AspNetUser> aspNetUsers = db.AspNetUsers;//.Include(a => a.Department);
+      var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+      List<AspNetUser2> LstAspNetUsers2 = new List<AspNetUser2>();
+      foreach (AspNetUser aspNetUser1 in db.AspNetUsers)
+      {
+        //var user = userManager.FindByIdAsync(user1.Id);
+        string rolename = userManager.GetRoles(aspNetUser1.Id).FirstOrDefault();
 
+        LstAspNetUsers2.Add(new AspNetUser2 { Id = aspNetUser1.Id, Email = aspNetUser1.Email, Type = rolename });
+      }
       //.Where(x=>x.Email== "ashir.aslam@tricast.com")
-      return View(await aspNetUsers.ToListAsync());
+      return View(LstAspNetUsers2);
     }
 
     // GET: AspNetUsers/Details/5
@@ -92,23 +100,29 @@ namespace LeaveON.Controllers
       List<SelectListItem> UserTypes = new List<SelectListItem>()
       {
           new SelectListItem{Text = "Admin", Value = "1"},
+          new SelectListItem{Text = "Manager", Value = "2"},
           new SelectListItem{Text = "User", Value = "3"}
       };
 
       //ViewBag.UserTypes = UserTypes;
       var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-      bool trueOrFalse = userManager.IsInRole(id, "Admin");
 
-      if (trueOrFalse == true)
+      string RoleId = "3";
+      if (userManager.IsInRole(id, "Admin"))
       {
-        ViewBag.UserTypesWithSelected = new SelectList(UserTypes, "Value", "Text", "1");
+        RoleId = "1";
       }
-      else
+      else if (userManager.IsInRole(id, "Manager"))
       {
-        ViewBag.UserTypesWithSelected = new SelectList(UserTypes, "Value", "Text", "3");
+        RoleId = "2";
+      }
+      else if (userManager.IsInRole(id, "User"))
+      {
+        RoleId = "3";
       }
 
+      ViewBag.UserTypesWithSelected = new SelectList(UserTypes, "Value", "Text", RoleId);
 
 
       return View(aspNetUser);
@@ -136,7 +150,7 @@ namespace LeaveON.Controllers
 
         var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
         //bool trueOrFalse = userManager.IsInRole(id, "Admin");
-        
+
         await userManager.RemoveFromRoleAsync(aspNetUser.Id, "Admin");
         await userManager.RemoveFromRoleAsync(aspNetUser.Id, "Manager");
         await userManager.RemoveFromRoleAsync(aspNetUser.Id, "User");
@@ -148,13 +162,13 @@ namespace LeaveON.Controllers
         //    await userManager.RemoveFromRoleAsync(aspNetUser.Id, "Manager");
         //    await userManager.RemoveFromRoleAsync(aspNetUser.Id, "User");
         //    break;
-          //case "2"://Manager
-          //  await userManager.RemoveFromRoleAsync(aspNetUser.Id, "Manager");
-          //  await userManager.RemoveFromRoleAsync(aspNetUser.Id, "User");
-          //  break;
-          //case "3"://User
-          //  await userManager.RemoveFromRoleAsync(aspNetUser.Id, "User");
-          //  break;
+        //case "2"://Manager
+        //  await userManager.RemoveFromRoleAsync(aspNetUser.Id, "Manager");
+        //  await userManager.RemoveFromRoleAsync(aspNetUser.Id, "User");
+        //  break;
+        //case "3"://User
+        //  await userManager.RemoveFromRoleAsync(aspNetUser.Id, "User");
+        //  break;
         //}
         switch (UserType)
         {
@@ -190,7 +204,7 @@ namespace LeaveON.Controllers
     //  return RedirectToAction("Index");
     //}
 
-    
+
     //
     // GET: /Account/ResetPassword
     //[AllowAnonymous]
@@ -201,7 +215,7 @@ namespace LeaveON.Controllers
 
     //
     // POST: /Account/ResetPassword
-    
+
     //[AllowAnonymous]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -217,8 +231,8 @@ namespace LeaveON.Controllers
       //---
       //if (user == null)
       //{
-        //// Don't reveal that the user does not exist
-        ////return RedirectToAction("ResetPasswordConfirmation", "Account");
+      //// Don't reveal that the user does not exist
+      ////return RedirectToAction("ResetPasswordConfirmation", "Account");
       //}
       //--
       //var result = await userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -241,7 +255,7 @@ namespace LeaveON.Controllers
       userManager.RemovePassword(model.Code);
 
       userManager.AddPassword(model.Code, model.Password);
-      
+
 
       return RedirectToAction("Index");
     }
@@ -281,38 +295,41 @@ namespace LeaveON.Controllers
 
 
     // GET: AspNetUsers/Delete/5
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Delete(string id)
-  {
-    if (id == null)
     {
-      return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+      if (id == null)
+      {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+      }
+      AspNetUser aspNetUser = await db.AspNetUsers.FindAsync(id);
+      if (aspNetUser == null)
+      {
+        return HttpNotFound();
+      }
+      return View(aspNetUser);
     }
-    AspNetUser aspNetUser = await db.AspNetUsers.FindAsync(id);
-    if (aspNetUser == null)
-    {
-      return HttpNotFound();
-    }
-    return View(aspNetUser);
-  }
 
-  // POST: AspNetUsers/Delete/5
-  [HttpPost, ActionName("Delete")]
-  [ValidateAntiForgeryToken]
-  public async Task<ActionResult> DeleteConfirmed(string id)
-  {
-    AspNetUser aspNetUser = await db.AspNetUsers.FindAsync(id);
-    db.AspNetUsers.Remove(aspNetUser);
-    await db.SaveChangesAsync();
-    return RedirectToAction("Index");
-  }
-
-  protected override void Dispose(bool disposing)
-  {
-    if (disposing)
+    // POST: AspNetUsers/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult> DeleteConfirmed(string id)
     {
-      db.Dispose();
+      AspNetUser aspNetUser = await db.AspNetUsers.FindAsync(id);
+      db.AspNetUsers.Remove(aspNetUser);
+      await db.SaveChangesAsync();
+
+      return RedirectToAction("Index");
     }
-    base.Dispose(disposing);
+
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        db.Dispose();
+      }
+      base.Dispose(disposing);
+    }
   }
-}
 }

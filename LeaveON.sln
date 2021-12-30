@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaveON", "LeaveON\LeaveON.csproj", "{EDF3D4F6-C46E-42EF-AA38-118574709BFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jsaosorio", "jsaosorio\jsaosorio.csproj", "{D2EFD2E8-1543-41DF-9EE9-358508F16AEB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryRepo", "InventoryRepo\InventoryRepo.csproj", "{08AE1ED2-3A61-4AD4-BAC1-B5854DBC6F72}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{EDF3D4F6-C46E-42EF-AA38-118574709BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF3D4F6-C46E-42EF-AA38-118574709BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF3D4F6-C46E-42EF-AA38-118574709BFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2EFD2E8-1543-41DF-9EE9-358508F16AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2EFD2E8-1543-41DF-9EE9-358508F16AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2EFD2E8-1543-41DF-9EE9-358508F16AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2EFD2E8-1543-41DF-9EE9-358508F16AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08AE1ED2-3A61-4AD4-BAC1-B5854DBC6F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08AE1ED2-3A61-4AD4-BAC1-B5854DBC6F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08AE1ED2-3A61-4AD4-BAC1-B5854DBC6F72}.Release|Any CPU.ActiveCfg = Release|Any CPU

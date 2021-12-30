@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using jsaosorio.Models;
+using InventoryRepo.Models;
 
 namespace LeaveON.Controllers
 {
+  [Authorize(Roles = "Admin")]
   public class AspNetUserClaimsController : Controller
   {
     //private LeaveONEntities db = new LeaveONEntities();
-    private jsaosorioEntities db = new jsaosorioEntities();
+    //private jsaosorioEntities db = new jsaosorioEntities();
+    private InventoryPortalEntities db = new InventoryPortalEntities();
 
     // GET: AspNetUserClaims
     public async Task<ActionResult> Index()

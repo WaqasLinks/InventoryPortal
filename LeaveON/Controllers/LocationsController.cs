@@ -11,6 +11,7 @@ using InventoryRepo.Models;
 
 namespace LeaveON.Controllers
 {
+  [Authorize(Roles = "Admin,Manager,User")]
   public class LocationsController : Controller
   {
     private InventoryPortalEntities db = new InventoryPortalEntities();
@@ -21,22 +22,10 @@ namespace LeaveON.Controllers
       return View(await db.Locations.ToListAsync());
     }
 
-    // GET: Locations/Details/5
-    public async Task<ActionResult> Details(string id)
-    {
-      if (id == null)
-      {
-        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      }
-      Location location = await db.Locations.FindAsync(id);
-      if (location == null)
-      {
-        return HttpNotFound();
-      }
-      return View(location);
-    }
+
 
     // GET: Locations/Create
+    [Authorize(Roles = "Admin,Manager")]
     public ActionResult Create()
     {
       return View();
@@ -47,6 +36,7 @@ namespace LeaveON.Controllers
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<ActionResult> Create([Bind(Include = "Id,LocationName,Remarks,DateCreated,DateModified")] Location location)
     {
       location.Id = Guid.NewGuid().ToString();
@@ -81,6 +71,7 @@ namespace LeaveON.Controllers
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<ActionResult> Edit([Bind(Include = "Id,LocationName,Remarks,DateCreated,DateModified")] Location location)
     {
       location.DateModified = DateTime.Now;
@@ -96,6 +87,7 @@ namespace LeaveON.Controllers
     }
 
     // GET: Locations/Delete/5
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Delete(string id)
     {
       if (id == null)
@@ -113,6 +105,7 @@ namespace LeaveON.Controllers
     // POST: Locations/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteConfirmed(string id)
     {
       Location location = await db.Locations.FindAsync(id);

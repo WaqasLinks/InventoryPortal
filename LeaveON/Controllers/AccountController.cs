@@ -16,7 +16,7 @@ using System.DirectoryServices;
 using System.Web.Hosting;
 
 using System.Data.Entity;
-using jsaosorio.Models;
+using InventoryRepo.Models;
 
 namespace LeaveON.Controllers
 {
@@ -27,7 +27,8 @@ namespace LeaveON.Controllers
     private ApplicationUserManager _userManager;
     //private LeaveONEntities db = new LeaveONEntities();
     //private CallCenterSalesEntities db = new CallCenterSalesEntities();
-    private jsaosorioEntities db = new jsaosorioEntities();
+    //private jsaosorioEntities db = new jsaosorioEntities();
+    private InventoryPortalEntities db = new InventoryPortalEntities();
     public AccountController()
     {
     }
@@ -101,7 +102,7 @@ namespace LeaveON.Controllers
         {
           case "Admin":
             await UserManager.AddToRoleAsync(userRoleModel.UserId, "Admin");
-            //await UserManager.AddToRoleAsync(userRoleModel.UserId, "Manager");
+            await UserManager.AddToRoleAsync(userRoleModel.UserId, "Manager");
             await UserManager.AddToRoleAsync(userRoleModel.UserId, "User");
             break;
           case "Manager":
@@ -326,7 +327,7 @@ namespace LeaveON.Controllers
     //
     // GET: /Account/Register
     //[AllowAnonymous]
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin")]
     public ActionResult Register()
     {
       //ViewBag.Countries = db.Countries;
@@ -341,7 +342,7 @@ namespace LeaveON.Controllers
     [HttpPost]
     //[AllowAnonymous]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Register(RegisterViewModel model)
     {
       model.DepartmentId = 1000;
@@ -394,7 +395,7 @@ namespace LeaveON.Controllers
     [HttpPost]
     //[AllowAnonymous]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin,Manager")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> UpdateUser(UpdateUserViewModel model)
     {
       if (ModelState.IsValid)
@@ -745,7 +746,7 @@ namespace LeaveON.Controllers
         return Redirect(returnUrl);
       }
       //return RedirectToAction("Index", "Leads");
-      return RedirectToAction("SearchDNC", "BaseDaily");
+      return RedirectToAction("Index", "Items");
     }
 
     internal class ChallengeResult : HttpUnauthorizedResult

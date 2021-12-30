@@ -262,185 +262,78 @@
             @if (User.Identity.IsAuthenticated)
             {
 
-              if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("User"))
+              if (User.IsInRole("Admin") || User.IsInRole("Manager"))
               {
-
-                @*<li class="nav-item">
-                    <a href="/Leads/Create" class="nav-link">
-                      <i class="nav-icon fa fa-address-card"></i>
-                      <p>New Sale</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/Leads/Index" class="nav-link">
-                      <i class="nav-icon fa fa-history"></i>
-                      <p>Sales History</p>
-                    </a>
-                  </li>*@ if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("User"))
-                {
-                  <li class="nav-item">
-                    <a href="/Items/Create" class="nav-link">
-                      <i class="nav-icon fa fa-plus"></i>
-                      <p>Add Device</p>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="/Items/Index" class="nav-link">
-                      <i class="nav-icon fa fa-list"></i>
-                      <p>Devices List</p>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="/ItemLogs/Index" class="nav-link">
-                      <i class="nav-icon fa fa-history"></i>
-                      <p>Device Activity Log</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/Locations/Create" class="nav-link">
-                      <i class="nav-icon fa fa-plus"></i>
-                      <p>Add Location</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/Locations/Index" class="nav-link">
-                      <i class="nav-icon fa fa-list"></i>
-                      <p>Locations List</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/DeviceTypes/Create" class="nav-link">
-                      <i class="nav-icon fa fa-plus"></i>
-                      <p>Add Device Type</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/DeviceTypes/Index" class="nav-link">
-                      <i class="nav-icon fa fa-list"></i>
-                      <p>Device Types List</p>
-                    </a>
-                  </li>
-
-                  @*<li class="nav-item">
-                      <a href="/basedaily/Upload" class="nav-link">
-                        <i class="nav-icon fa fa-upload fa-phone-slash"></i>
-                        <p>Upload Excel File</p>
-                      </a>
-                    </li>*@
-                  @*<li class="nav-item">
-                      <a href="/Uploads/Index" class="nav-link">
-                        <i class="nav-icon fa fa-history"></i>
-                        <p>Uploaded Files History</p>
-                      </a>
-                    </li>*@ }
-
-                @*<li class="nav-item">
-                    <a href="/basedaily/SearchDNC" class="nav-link">
-                      <i class="nav-icon fa fa-search"></i>
-                      <p>Main Page</p>
-                    </a>
-                  </li>*@
+                <li class="nav-item">
+                  <a href="/Items/Create" class="nav-link">
+                    <i class="nav-icon fa fa-plus"></i>
+                    <p>Add Device</p>
+                  </a>
+                </li>
               }
+                <li class="nav-item">
+                  <a href="/Items/Index" class="nav-link">
+                    <i class="nav-icon fa fa-list"></i>
+                    <p>Devices List</p>
+                  </a>
+                </li>
 
-              if (User.IsInRole("Admin"))
-              { @*<li class="nav-item">
-                    <a href="/Leads/Index" class="nav-link">
-                      <i class="nav-icon fa fa-list"></i>
-                      <p>Users List</p>
-                    </a>
-                  </li>
-                    <li class="nav-item">
-                    <a href="/Leads/Index" class="nav-link">
-                      <i class="nav-icon fa fa-edit"></i>
-                      <p>New User</p>
-                    </a>
-                  </li>*@ @*<li class="nav-item">
-                  <a href="/Suppliers/Create" class="nav-link">
-                    <i class="nav-icon fa fa-building"></i>
-                    <p>New Supplier</p>
+                <li class="nav-item">
+                  <a href="/ItemLogs/Index" class="nav-link">
+                    <i class="nav-icon fa fa-history"></i>
+                    <p>Device Activity Log</p>
+                  </a>
+                </li>
+              if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+              {
+                <li class="nav-item">
+                  <a href="/Locations/Create" class="nav-link">
+                    <i class="nav-icon fa fa-plus"></i>
+                    <p>Add Location</p>
+                  </a>
+                </li>
+              }
+                <li class="nav-item">
+                  <a href="/Locations/Index" class="nav-link">
+                    <i class="nav-icon fa fa-list"></i>
+                    <p>Locations List</p>
+                  </a>
+                </li>
+              if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+              {
+                <li class="nav-item">
+                  <a href="/DeviceTypes/Create" class="nav-link">
+                    <i class="nav-icon fa fa-plus"></i>
+                    <p>Add Device Type</p>
+                  </a>
+                </li>
+              }
+                <li class="nav-item">
+                  <a href="/DeviceTypes/Index" class="nav-link">
+                    <i class="nav-icon fa fa-list"></i>
+                    <p>Device Types List</p>
+                  </a>
+                </li>
+
+
+
+
+
+                if (User.IsInRole("Admin"))
+                {
+
+                <li class="nav-item">
+                  <a href="/Account/Register" class="nav-link">
+                    <i class="nav-icon fa fa-user-plus"></i>
+                    <p>Add User</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="/Suppliers/Index" class="nav-link">
+                  <a href="/AspNetUsers/Index" class="nav-link">
                     <i class="nav-icon fa fa-list"></i>
-                    <p>Suppliers List</p>
+                    <p>Users List</p>
                   </a>
-                </li>*@
-
-                  <li class="nav-item">
-                    <a href="/Account/Register" class="nav-link">
-                      <i class="nav-icon fa fa-user-plus"></i>
-                      <p>Add User</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="/AspNetUsers/Index" class="nav-link">
-                      <i class="nav-icon fa fa-list"></i>
-                      <p>Users List</p>
-                    </a>
-                  </li>
-
-
-                }
-                if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("User"))
-                { @*<li class="nav-item">
-                      <a href="/Attendances/Index" class="nav-link">
-                        <i class="nav-icon fa fa-user-check"></i>
-                        <p>Attendance</p>
-                      </a>
-                    </li>*@
-
-                @*<li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <p></p>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <p></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <p></p>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <p></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <p></p>
-                    </a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <p></p>
-                    </a>
-                  </li>*@
-
-
-
-
-                @*<li class="nav-item">
-
-                    <span class="brand-text font-weight-light">
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <img src="~/dist/img/logo-odoo.jpg"
-                           alt="Adsvictoriam Logo"
-                           class="brand-image-xl img-fluid elevation-5"
-                           style="opacity: .8" width="150" height="150">
-                    </span>
-
-                  </li>*@
-
+                </li>
 
 
               }

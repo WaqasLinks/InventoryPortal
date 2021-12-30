@@ -25,22 +25,9 @@ namespace LeaveON.Controllers
       return View(await items.ToListAsync());
     }
 
-    // GET: Items/Details/5
-    public async Task<ActionResult> Details(string id)
-    {
-      if (id == null)
-      {
-        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-      }
-      Item item = await db.Items.FindAsync(id);
-      if (item == null)
-      {
-        return HttpNotFound();
-      }
-      return View(item);
-    }
 
     // GET: Items/Create
+    [Authorize(Roles = "Admin,Manager")]
     public ActionResult Create()
     {
       ViewBag.AspNetUserId = new SelectList(db.AspNetUsers, "Id", "Hometown");
@@ -56,6 +43,7 @@ namespace LeaveON.Controllers
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<ActionResult> Create([Bind(Include = "Id,AspNetUserId,Barcode,SerialNumber,DeviceTypeId,Manufacturer,Model,Description,ReceivingDate,WarrantyExpiryDate,LocationId,StatusId,Racked,Remarks,ItemLogId,DateCreated,DateModified")] Item item)
     {
 
@@ -81,6 +69,7 @@ namespace LeaveON.Controllers
     }
 
     // GET: Items/Edit/5
+
     public async Task<ActionResult> Edit(string id)
     {
       if (id == null)
@@ -96,6 +85,7 @@ namespace LeaveON.Controllers
       ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type", item.DeviceTypeId);
       ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName", item.LocationId);
       ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName", item.StatusId);
+      TempData["orignalLocation"] = db.Locations.Single(x => x.Id == item.LocationId);
       return View(item);
     }
 
@@ -104,12 +94,16 @@ namespace LeaveON.Controllers
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<ActionResult> Edit([Bind(Include = "Id,AspNetUserId,Barcode,SerialNumber,DeviceTypeId,Manufacturer,Model,Description,ReceivingDate,WarrantyExpiryDate,LocationId,StatusId,Racked,Remarks,ItemLogId,DateCreated,DateModified")] Item item)
     {
-      //Get Orignal value before save changes
-      Item entityBeforeChange = db.Items.Single(x => x.Id == item.Id);
-      db.Entry(entityBeforeChange).State = EntityState.Detached; // breaks up the connection to the Context
-      Location oldLocation = db.Locations.Single(x => x.Id == entityBeforeChange.LocationId);//Orignal value
+      //Get Orignal value before save changes // this code working fine but not needed as done by in only one line.
+      //Item entityBeforeChange = db.Items.Single(x => x.Id == item.Id);
+      //db.Entry(entityBeforeChange).State = EntityState.Detached; // breaks up the connection to the Context
+      //Location oldLocation = db.Locations.Single(x => x.Id == entityBeforeChange.LocationId);//Orignal value
+
+      Location oldLocation = (Location)TempData["orignalLocation"];
+
 
       item.DateModified = DateTime.Now;
       if (ModelState.IsValid)
@@ -119,10 +113,17 @@ namespace LeaveON.Controllers
         db.Entry(item).Property(x => x.DateCreated).IsModified = false;
         if (oldLocation.Id != item.LocationId)
         {
-          item.AspNetUserId = User.Identity.GetUserId();
+          //item.AspNetUserId = User.Identity.GetUserId();
           Location newLocation = db.Locations.Single(x => x.Id == item.LocationId);
-          ItemLog itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = oldLocation.LocationName + " → " + 
-            item.Location.LocationName, EventDateTime = DateTime.Now, ItemId = item.Id };
+          ItemLog itemLog = new ItemLog
+          {
+            Id = Guid.NewGuid().ToString(),
+            AspNetUserId = User.Identity.GetUserId(),
+            Description = oldLocation.LocationName + " → " +
+            item.Location.LocationName,
+            EventDateTime = DateTime.Now,
+            ItemId = item.Id
+          };
           db.ItemLogs.Add(itemLog);
         }
         await db.SaveChangesAsync();
@@ -136,6 +137,7 @@ namespace LeaveON.Controllers
     }
 
     // GET: Items/Delete/5
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Delete(string id)
     {
       if (id == null)
@@ -153,6 +155,7 @@ namespace LeaveON.Controllers
     // POST: Items/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteConfirmed(string id)
     {
       Item item = await db.Items.FindAsync(id);
