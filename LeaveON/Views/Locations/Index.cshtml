@@ -1,52 +1,86 @@
-﻿@model IEnumerable<InventoryRepo.Models.Location>
+@model IEnumerable<InventoryRepo.Models.Location>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LocationName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateModified)
-        </th>
-        <th></th>
-    </tr>
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            Locations List
+            @Html.ActionLink("Add New", "Create", new object { }, new { @class = "btn btn-warning" })
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateModified)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
 
-</table>
+          </h3>
+        </div>
+
+
+        <div class="card-body">
+
+          <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+              </div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+
+
+                <table id="items" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+                  <thead>
+                    <tr>
+                      <th>
+                        @Html.DisplayNameFor(model => model.LocationName)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Remarks)
+                      </th>
+                      @*<th>
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.DateModified)
+                      </th>*@
+                      <th></th>
+                    </tr>
+                  </thead>
+                  @foreach (var item in Model)
+                  {
+                    <tr>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                      </td>
+                      @*<td>
+                        @Html.DisplayFor(modelItem => item.DateCreated)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.DateModified)
+                      </td>*@
+                      <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                        @Html.ActionLink("Update", "Edit", new { id = item.Id }, new { @class = "btn btn-info" }) 
+                          </td>
+                        </tr>
+                      }
+
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>

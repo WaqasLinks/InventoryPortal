@@ -14,17 +14,13 @@ namespace InventoryRepo.Models
     
     public partial class ItemLog
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ItemLog()
-        {
-            this.Items = new HashSet<Item>();
-        }
-    
         public string Id { get; set; }
+        public string ItemId { get; set; }
+        public string AspNetUserId { get; set; }
         public string Description { get; set; }
-        public Nullable<System.DateTime> MovementDate { get; set; }
+        public Nullable<System.DateTime> EventDateTime { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Item> Items { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Item Item { get; set; }
     }
 }

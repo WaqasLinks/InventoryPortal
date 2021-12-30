@@ -234,6 +234,7 @@
     <Compile Include="Controllers\BaseHistoricalsController.cs" />
     <Compile Include="Controllers\DeviceTypesController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ItemLogsController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -2293,6 +2294,11 @@
     <Content Include="Views\DeviceTypes\Details.cshtml" />
     <Content Include="Views\DeviceTypes\Edit.cshtml" />
     <Content Include="Views\DeviceTypes\Index.cshtml" />
+    <Content Include="Views\ItemLogs\Create.cshtml" />
+    <Content Include="Views\ItemLogs\Delete.cshtml" />
+    <Content Include="Views\ItemLogs\Details.cshtml" />
+    <Content Include="Views\ItemLogs\Edit.cshtml" />
+    <Content Include="Views\ItemLogs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\SelectWeakListHtmlHelper\" />

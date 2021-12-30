@@ -9,9 +9,9 @@
 <!-- left column -->
 <div class="col-md-6">
   <!-- general form elements -->
-  <div class="card card-primary">
+  <div class="card card-warning">
     <div class="card-header">
-      <h3 class="card-title">Add Item</h3>
+      <h3 class="card-title">Add Device</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
@@ -121,15 +121,24 @@
         </div>
 
         <div class="form-group">
+          @Html.EditorFor(model => model.Racked)
           @Html.LabelFor(model => model.Racked, htmlAttributes: new { @class = "" })
+          @Html.ValidationMessageFor(model => model.Racked, "", new { @class = "text-danger" })
+        </div>
 
-          <div class="checkbox">
-            @{ 
-                Model.Racked
-            }
-            @Html.EditorFor(model => model.Racked)
-            @Html.ValidationMessageFor(model => model.Racked, "", new { @class = "text-danger" })
-          </div>
+        <div class="form-group RackedFields">
+          @Html.LabelFor(model => model.RackId, htmlAttributes: new { @class = "" })
+
+          @Html.EditorFor(model => model.RackId, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.RackId, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="form-group RackedFields">
+          @Html.LabelFor(model => model.UID, htmlAttributes: new { @class = "" })
+
+          @Html.EditorFor(model => model.UID, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.UID, "", new { @class = "text-danger" })
 
         </div>
 
@@ -167,7 +176,7 @@
 
         <div class="form-group">
           <div class="class=" card-footer">
-            <input type="submit" value="Save" class="btn btn-primary" style="width: 180px; margin-left:auto;margin-right:auto;display:block;margin-top:auto;margin-bottom:0%" />
+            <input type="submit" value="Add" class="btn btn-warning" style="width: 180px; margin-left:auto;margin-right:auto;display:block;margin-top:auto;margin-bottom:0%" />
           </div>
         </div>
         <br />
@@ -188,12 +197,23 @@
 <script>
   $(function () {
 
-    $.get('@Url.Action("Edit","UserLeavePolicies")?id=' + "@ViewBag.UserLeavePolicyId" + '&Caller=' + "LeaveRequest" + "&leaveUserId=" + "@ViewBag.LeaveUserId" , function (data) {
-        $("#UserLeavePolicyData").append(data);
-    });
-
-
     $(document).ready(function () {
+
+      
+      if ($('#Racked').is(':checked')) {
+        $('.RackedFields').show();
+      } else {
+        $('.RackedFields').hide();
+      }
+
+      $('#Racked').change(function () {
+        if (this.checked)
+          $('.RackedFields').show();/*.fadeIn('slow');*/
+        else
+          $('.RackedFields').hide();/*.fadeOut('slow');*/
+
+      });
+
 
       $('#btnApply').click(function () {
         if (IsDatesCorrect() == false) {

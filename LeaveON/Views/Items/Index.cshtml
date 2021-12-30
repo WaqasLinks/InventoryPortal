@@ -1,124 +1,244 @@
-﻿@model IEnumerable<InventoryRepo.Models.Item>
+@model IEnumerable<InventoryRepo.Models.Item>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Barcode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeviceTypeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Manufacturer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Model)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReceivingDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WarrantyExpiryDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Racked)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateModified)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.Hometown)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemLog.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location.LocationName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status.StatusName)
-        </th>
-        <th></th>
-    </tr>
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            Devices List
+            @Html.ActionLink("Add New", "Create", new object { }, new { @class = "btn btn-warning" })
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Barcode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SerialNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeviceTypeId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Manufacturer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Model)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReceivingDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WarrantyExpiryDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Racked)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateModified)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser.Hometown)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemLog.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.LocationName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status.StatusName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
 
-</table>
+          </h3>
+        </div>
+
+
+        <div class="card-body">
+
+          <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+              </div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+
+
+                <table id="items" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+                  <thead>
+                    <tr>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.ReceivingDate)*@
+                        Receiving
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Barcode)
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.SerialNumber)*@
+                        Serial
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.DeviceType)*@
+                        Type
+                      </th>
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.Manufacturer)
+                        </th>*@
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.Model)
+                        </th>*@
+                      <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                      </th>
+
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.WarrantyExpiryDate)*@
+                        Warranty
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Racked)
+                      </th>
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.Remarks)
+                        </th>*@
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.DateCreated)
+                        </th>*@
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.DateModified)
+                        </th>*@
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.AspNetUser.Hometown)
+                        </th>*@
+                      @*<th>
+                          @Html.DisplayNameFor(model => model.ItemLog.Description)
+                        </th>*@
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Location.LocationName)*@
+                        Location
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Status.StatusName)*@
+                        Status
+                      </th>
+                      <th></th>
+
+                    </tr>
+                  </thead>
+                  @foreach (var item in Model)
+                  {
+                    <tr>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.ReceivingDate)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Barcode)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.SerialNumber)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.DeviceType.Type)
+                      </td>
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.Manufacturer)
+                        </td>*@
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.Model)
+                        </td>*@
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                      </td>
+
+                      <td>
+                        @Html.DisplayFor(modelItem => item.WarrantyExpiryDate)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Racked)
+                      </td>
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.Remarks)
+                        </td>*@
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.DateCreated)
+                        </td>*@
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.DateModified)
+                        </td>*@
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.AspNetUser.Hometown)
+                        </td>*@
+                      @*<td>
+                          @Html.DisplayFor(modelItem => item.ItemLog.Description)
+                        </td>*@
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Location.LocationName)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Status.StatusName)
+                      </td>
+                      <td>
+                        @*<a href="/Products/Create" id="createProduct" class="btn btn-info "><i class=""></i> New Product</a> |*@
+                        @Html.ActionLink("Update", "Edit", new { id = item.Id }, new { @class = "btn btn-info" }) @*|
+                          @Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                      </td>
+                    </tr>
+                  }
+
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+    //$("#exportExcel a").click(function () {
+    $("#exportExcel").click(function () {
+      //alert('aaa');
+      $("#example2").table2excel({
+        // exclude CSS class
+        exclude: ".noExl",
+        name: "PhoneNumbers",
+        filename: "PhoneNumbers", //do not include extension
+        fileext: ".xlsx" // file extension
+      });
+    });
+
+    //document.getElementById('exportExcel').addEventListener('click', function () {
+    //  var table2excel = new Table2Excel();
+    //  alert('asfdd');
+    //  table2excel.export(document.querySelectorAll('#example2'));
+    //});
+
+    //$("#exportExcel a").click(function () {
+
+    //  var table2excel = new Table2Excel();
+    //  table2excel.export(document.querySelectorAll("#example2"));
+    //  alert('asf');
+    //});
+
+
+
+    //$('#example2').DataTable({
+    //  "paging": true,
+    //  "lengthChange": true,
+    //  "pageLength": 100,
+    //  "searching": true,
+    //  "ordering": true,
+    //  "info": true,
+    //  "autoWidth": true,
+    //  "responsive": true,
+    //  "order": [[2, "desc"]]
+    //});
+
+    var table = $('#items').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "pageLength": 10,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+      "order": [[0, "desc"]]
+    });
+
+    //$('a.toggle-vis').on('click', function (e) {
+    //  e.preventDefault();
+
+    //  // Get the column API object
+    //  var column = table.column($(this).attr('data-column'));
+
+    //  // Toggle the visibility
+    //  column.visible(!column.visible());
+    //});
+
+  });
+
+
+</script>

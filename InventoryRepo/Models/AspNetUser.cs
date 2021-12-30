@@ -18,6 +18,7 @@ namespace InventoryRepo.Models
         public AspNetUser()
         {
             this.Items = new HashSet<Item>();
+            this.ItemLogs = new HashSet<ItemLog>();
         }
     
         public string Id { get; set; }
@@ -44,5 +45,7 @@ namespace InventoryRepo.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ItemLog> ItemLogs { get; set; }
     }
 }

@@ -14,10 +14,16 @@ namespace InventoryRepo.Models
     
     public partial class Item
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Item()
+        {
+            this.ItemLogs = new HashSet<ItemLog>();
+        }
+    
         public string Id { get; set; }
         public string AspNetUserId { get; set; }
         public string Barcode { get; set; }
-        public Nullable<decimal> SerialNumber { get; set; }
+        public string SerialNumber { get; set; }
         public string DeviceTypeId { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
@@ -26,16 +32,18 @@ namespace InventoryRepo.Models
         public Nullable<System.DateTime> WarrantyExpiryDate { get; set; }
         public string LocationId { get; set; }
         public string StatusId { get; set; }
-        public Nullable<bool> Racked { get; set; }
+        public bool Racked { get; set; }
         public string Remarks { get; set; }
-        public string ItemLogId { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }
+        public string RackId { get; set; }
+        public string UID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual ItemLog ItemLog { get; set; }
+        public virtual DeviceType DeviceType { get; set; }
         public virtual Location Location { get; set; }
         public virtual Status Status { get; set; }
-        public virtual DeviceType DeviceType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ItemLog> ItemLogs { get; set; }
     }
 }

@@ -48,7 +48,7 @@
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
           <Property Name="Barcode" Type="nvarchar" MaxLength="100" />
-          <Property Name="SerialNumber" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="500" />
           <Property Name="DeviceTypeId" Type="nvarchar" MaxLength="128" />
           <Property Name="Manufacturer" Type="nvarchar" MaxLength="500" />
           <Property Name="Model" Type="nvarchar" MaxLength="500" />
@@ -57,9 +57,10 @@
           <Property Name="WarrantyExpiryDate" Type="datetime" />
           <Property Name="LocationId" Type="nvarchar" MaxLength="128" />
           <Property Name="StatusId" Type="nvarchar" MaxLength="128" />
-          <Property Name="Racked" Type="bit" />
+          <Property Name="Racked" Type="bit" Nullable="false" />
+          <Property Name="RackId" Type="nvarchar" MaxLength="500" />
+          <Property Name="UID" Type="nvarchar" MaxLength="500" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="1000" />
-          <Property Name="ItemLogId" Type="nvarchar" MaxLength="128" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="DateModified" Type="datetime" />
         </EntityType>
@@ -68,8 +69,10 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ItemId" Type="nvarchar" MaxLength="128" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
-          <Property Name="MovementDate" Type="datetime" />
+          <Property Name="EventDateTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -119,20 +122,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Item_ItemLog">
-          <End Role="ItemLog" Type="Self.ItemLog" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Item" Type="Self.Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ItemLog">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="ItemLogId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Item_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -158,6 +147,32 @@
             </Principal>
             <Dependent Role="Item">
               <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemLog_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ItemLog" Type="Self.ItemLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemLog">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemLog_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="0..1" />
+          <End Role="ItemLog" Type="Self.ItemLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemLog">
+              <PropertyRef Name="ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -176,10 +191,6 @@
             <End Role="DeviceType" EntitySet="DeviceType" />
             <End Role="Item" EntitySet="Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Item_ItemLog" Association="Self.FK_Item_ItemLog">
-            <End Role="ItemLog" EntitySet="ItemLog" />
-            <End Role="Item" EntitySet="Item" />
-          </AssociationSet>
           <AssociationSet Name="FK_Item_Location" Association="Self.FK_Item_Location">
             <End Role="Location" EntitySet="Location" />
             <End Role="Item" EntitySet="Item" />
@@ -188,16 +199,56 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="Item" EntitySet="Item" />
           </AssociationSet>
+          <AssociationSet Name="FK_ItemLog_AspNetUsers" Association="Self.FK_ItemLog_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ItemLog" EntitySet="ItemLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemLog_Item" Association="Self.FK_ItemLog_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemLog" EntitySet="ItemLog" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InventoryPortalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="InventoryPortalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetUsers" EntityType="InventoryPortalModel.AspNetUser" />
+          <EntitySet Name="DeviceTypes" EntityType="InventoryPortalModel.DeviceType" />
+          <EntitySet Name="Items" EntityType="InventoryPortalModel.Item" />
+          <EntitySet Name="ItemLogs" EntityType="InventoryPortalModel.ItemLog" />
+          <EntitySet Name="Locations" EntityType="InventoryPortalModel.Location" />
+          <EntitySet Name="Status" EntityType="InventoryPortalModel.Status" />
+          <AssociationSet Name="FK_Item_AspNetUsers" Association="InventoryPortalModel.FK_Item_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemLog_AspNetUsers" Association="InventoryPortalModel.FK_ItemLog_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="ItemLog" EntitySet="ItemLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_DeviceType" Association="InventoryPortalModel.FK_Item_DeviceType">
+            <End Role="DeviceType" EntitySet="DeviceTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Location" Association="InventoryPortalModel.FK_Item_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_Status" Association="InventoryPortalModel.FK_Item_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemLog_Item" Association="InventoryPortalModel.FK_ItemLog_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemLog" EntitySet="ItemLogs" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="BioStarEmpNum" Type="Int32" />
           <Property Name="Hometown" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
@@ -210,7 +261,7 @@
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <Property Name="DateModified" Type="DateTime" Precision="3" />
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -218,150 +269,9 @@
           <Property Name="UserLeavePolicyId" Type="Int32" />
           <Property Name="CountryId" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="Items" Relationship="Self.FK_Item_AspNetUsers" FromRole="AspNetUsers" ToRole="Item" />
+          <NavigationProperty Name="Items" Relationship="InventoryPortalModel.FK_Item_AspNetUsers" FromRole="AspNetUser" ToRole="Item" />
+          <NavigationProperty Name="ItemLogs" Relationship="InventoryPortalModel.FK_ItemLog_AspNetUsers" FromRole="AspNetUser" ToRole="ItemLog" />
         </EntityType>
-        <EntityType Name="Item">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Barcode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SerialNumber" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="DeviceTypeId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Manufacturer" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ReceivingDate" Type="DateTime" Precision="3" />
-          <Property Name="WarrantyExpiryDate" Type="DateTime" Precision="3" />
-          <Property Name="LocationId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="StatusId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Racked" Type="Boolean" />
-          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="ItemLogId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-          <Property Name="DateModified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Item_AspNetUsers" FromRole="Item" ToRole="AspNetUsers" />
-          <NavigationProperty Name="ItemLog" Relationship="Self.FK_Item_ItemLog" FromRole="Item" ToRole="ItemLog" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Item_Location" FromRole="Item" ToRole="Location" />
-          <NavigationProperty Name="Status" Relationship="Self.FK_Item_Status" FromRole="Item" ToRole="Status" />
-          <NavigationProperty Name="DeviceType" Relationship="InventoryPortalModel.FK_Item_DeviceType" FromRole="Item" ToRole="DeviceType" />
-        </EntityType>
-        <EntityType Name="ItemLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MovementDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Items" Relationship="Self.FK_Item_ItemLog" FromRole="ItemLog" ToRole="Item" />
-        </EntityType>
-        <EntityType Name="Location">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LocationName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-          <Property Name="DateModified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Items" Relationship="Self.FK_Item_Location" FromRole="Location" ToRole="Item" />
-        </EntityType>
-        <EntityType Name="Status">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StatusName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-          <Property Name="DateModified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Items" Relationship="Self.FK_Item_Status" FromRole="Status" ToRole="Item" />
-        </EntityType>
-        <Association Name="FK_Item_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Item" Type="Self.Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="AspNetUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Item_ItemLog">
-          <End Role="ItemLog" Type="Self.ItemLog" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Item" Type="Self.Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ItemLog">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="ItemLogId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Item_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Item" Type="Self.Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="LocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Item_Status">
-          <End Role="Status" Type="Self.Status" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Item" Type="Self.Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="InventoryPortalEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
-          <EntitySet Name="Items" EntityType="Self.Item" />
-          <EntitySet Name="ItemLogs" EntityType="Self.ItemLog" />
-          <EntitySet Name="Locations" EntityType="Self.Location" />
-          <EntitySet Name="Status" EntityType="Self.Status" />
-          <AssociationSet Name="FK_Item_AspNetUsers" Association="Self.FK_Item_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Item_ItemLog" Association="Self.FK_Item_ItemLog">
-            <End Role="ItemLog" EntitySet="ItemLogs" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Item_Location" Association="Self.FK_Item_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Item_Status" Association="Self.FK_Item_Status">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-          <EntitySet Name="DeviceTypes" EntityType="InventoryPortalModel.DeviceType" />
-          <AssociationSet Name="FK_Item_DeviceType" Association="InventoryPortalModel.FK_Item_DeviceType">
-            <End Role="DeviceType" EntitySet="DeviceTypes" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="DeviceType">
           <Key>
             <PropertyRef Name="Id" />
@@ -373,6 +283,96 @@
           <Property Name="DateModified" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Items" Relationship="InventoryPortalModel.FK_Item_DeviceType" FromRole="DeviceType" ToRole="Item" />
         </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Barcode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SerialNumber" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="DeviceTypeId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Manufacturer" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ReceivingDate" Type="DateTime" Precision="3" />
+          <Property Name="WarrantyExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="LocationId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="StatusId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Racked" Type="Boolean" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="InventoryPortalModel.FK_Item_AspNetUsers" FromRole="Item" ToRole="AspNetUser" />
+          <NavigationProperty Name="DeviceType" Relationship="InventoryPortalModel.FK_Item_DeviceType" FromRole="Item" ToRole="DeviceType" />
+          <NavigationProperty Name="Location" Relationship="InventoryPortalModel.FK_Item_Location" FromRole="Item" ToRole="Location" />
+          <NavigationProperty Name="Status" Relationship="InventoryPortalModel.FK_Item_Status" FromRole="Item" ToRole="Status" />
+          <NavigationProperty Name="ItemLogs" Relationship="InventoryPortalModel.FK_ItemLog_Item" FromRole="Item" ToRole="ItemLog" />
+          <Property Name="RackId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ItemLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ItemId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EventDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="InventoryPortalModel.FK_ItemLog_AspNetUsers" FromRole="ItemLog" ToRole="AspNetUser" />
+          <NavigationProperty Name="Item" Relationship="InventoryPortalModel.FK_ItemLog_Item" FromRole="ItemLog" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LocationName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Items" Relationship="InventoryPortalModel.FK_Item_Location" FromRole="Location" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="StatusName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Items" Relationship="InventoryPortalModel.FK_Item_Status" FromRole="Status" ToRole="Item" />
+        </EntityType>
+        <Association Name="FK_Item_AspNetUsers">
+          <End Type="InventoryPortalModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InventoryPortalModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemLog_AspNetUsers">
+          <End Type="InventoryPortalModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InventoryPortalModel.ItemLog" Role="ItemLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemLog">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Item_DeviceType">
           <End Type="InventoryPortalModel.DeviceType" Role="DeviceType" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -387,6 +387,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Item_Location">
+          <End Type="InventoryPortalModel.Location" Role="Location" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InventoryPortalModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_Status">
+          <End Type="InventoryPortalModel.Status" Role="Status" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="InventoryPortalModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemLog_Item">
+          <End Type="InventoryPortalModel.Item" Role="Item" Multiplicity="0..1" />
+          <End Type="InventoryPortalModel.ItemLog" Role="ItemLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemLog">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -396,81 +436,27 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="InventoryPortalModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="BioStarEmpNum" ColumnName="BioStarEmpNum" />
-                <ScalarProperty Name="Hometown" ColumnName="Hometown" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
-                <ScalarProperty Name="UserLeavePolicyId" ColumnName="UserLeavePolicyId" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="InventoryPortalModel.Item">
-              <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
-                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
-                <ScalarProperty Name="DeviceTypeId" ColumnName="DeviceTypeId" />
-                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ReceivingDate" ColumnName="ReceivingDate" />
-                <ScalarProperty Name="WarrantyExpiryDate" ColumnName="WarrantyExpiryDate" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="Racked" ColumnName="Racked" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="UserLeavePolicyId" ColumnName="UserLeavePolicyId" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="ItemLogId" ColumnName="ItemLogId" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ItemLogs">
-            <EntityTypeMapping TypeName="InventoryPortalModel.ItemLog">
-              <MappingFragment StoreEntitySet="ItemLog">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MovementDate" ColumnName="MovementDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Locations">
-            <EntityTypeMapping TypeName="InventoryPortalModel.Location">
-              <MappingFragment StoreEntitySet="Location">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Status">
-            <EntityTypeMapping TypeName="InventoryPortalModel.Status">
-              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Hometown" ColumnName="Hometown" />
+                <ScalarProperty Name="BioStarEmpNum" ColumnName="BioStarEmpNum" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -481,6 +467,63 @@
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="InventoryPortalModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="UID" ColumnName="UID" />
+                <ScalarProperty Name="RackId" ColumnName="RackId" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Racked" ColumnName="Racked" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="WarrantyExpiryDate" ColumnName="WarrantyExpiryDate" />
+                <ScalarProperty Name="ReceivingDate" ColumnName="ReceivingDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="DeviceTypeId" ColumnName="DeviceTypeId" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemLogs">
+            <EntityTypeMapping TypeName="InventoryPortalModel.ItemLog">
+              <MappingFragment StoreEntitySet="ItemLog">
+                <ScalarProperty Name="EventDateTime" ColumnName="EventDateTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="InventoryPortalModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="InventoryPortalModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
