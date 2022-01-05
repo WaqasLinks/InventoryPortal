@@ -114,6 +114,7 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LocationId" Type="nvarchar" MaxLength="500" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="1000" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="DateModified" Type="datetime" />
@@ -451,6 +452,7 @@
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <Property Name="DateModified" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Items" Relationship="InventoryPortalModel.FK_Item_Location" FromRole="Location" ToRole="Item" />
+          <Property Name="LocationId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -688,6 +690,7 @@
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="InventoryPortalModel.Location">
               <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />

@@ -37,7 +37,7 @@ namespace LeaveON.Controllers
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin,Manager")]
-    public async Task<ActionResult> Create([Bind(Include = "Id,LocationName,Remarks,DateCreated,DateModified")] Location location)
+    public async Task<ActionResult> Create([Bind(Include = "Id,LocationId,LocationName,Remarks,DateCreated,DateModified")] Location location)
     {
       location.Id = Guid.NewGuid().ToString();
       location.DateCreated = DateTime.Now;
@@ -72,7 +72,7 @@ namespace LeaveON.Controllers
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin,Manager")]
-    public async Task<ActionResult> Edit([Bind(Include = "Id,LocationName,Remarks,DateCreated,DateModified")] Location location)
+    public async Task<ActionResult> Edit([Bind(Include = "Id,LocationId,LocationName,Remarks,DateCreated,DateModified")] Location location)
     {
       location.DateModified = DateTime.Now;
       if (ModelState.IsValid)
