@@ -102,89 +102,89 @@
                   </thead>
                   @foreach (var item in Model)
                   {
-                <tr>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.Barcode)
-                  </td>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.SerialNumber)
+                    <tr>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Barcode)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.SerialNumber)
 
-                  </td>
+                      </td>
 
-                  <td>
-                    @Html.DisplayFor(modelItem => item.DeviceType.Type)
+                      <td>
+                        @Html.DisplayFor(modelItem => item.DeviceType.Type)
 
-                  </td>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.Manufacturer)
-                  </td>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                  </td>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                  </td>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.ReceivingDate)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Manufacturer)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Model)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.ReceivingDate)
 
-                  </td>
+                      </td>
 
-                  <td>
-                    @Html.DisplayFor(modelItem => item.WarrantyExpiryDate)
+                      <td>
+                        @Html.DisplayFor(modelItem => item.WarrantyExpiryDate)
 
-                  </td>
-                  <td>
-                    @Html.DisplayFor(modelItem => item.Location.LocationName)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Location.LocationName)
 
-                  </td>
-                  <td>
+                      </td>
+                      <td>
 
-                    @Html.DisplayFor(modelItem => item.Location.LocationId)
-                  </td>
+                        @Html.DisplayFor(modelItem => item.Location.LocationId)
+                      </td>
 
-                  <td>
-                    @Html.DisplayFor(modelItem => item.Status.StatusName)
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Status.StatusName)
 
-                  </td>
-                  <td>
-                    @*@Html.DisplayFor(modelItem => item.Racked)*@
-                    @(item.Racked? "Yes":"No")
+                      </td>
+                      <td>
+                        @*@Html.DisplayFor(modelItem => item.Racked)*@
+                        @(item.Racked? "Yes":"No")
 
-                  </td>
-                  <td>
-                    
-                    @Html.DisplayFor(modelItem => item.RackId)
-                    
-                  </td>
-                  <td>
-                    
-                    @Html.DisplayFor(modelItem => item.UID)
-                  </td>
+                      </td>
+                      <td>
+
+                        @Html.DisplayFor(modelItem => item.RackId)
+
+                      </td>
+                      <td>
+
+                        @Html.DisplayFor(modelItem => item.UID)
+                      </td>
 
 
-                  <td>
-                    @*<a href="/Products/Create" id="createProduct" class="btn btn-info "><i class=""></i> New Product</a> |*@
-                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                    {
+                      <td>
+                        @*<a href="/Products/Create" id="createProduct" class="btn btn-info "><i class=""></i> New Product</a> |*@
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
 
-                      @Html.ActionLink("Update", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
-                    }
-                    else
-                    {
-                      @Html.ActionLink("View", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
-                    }
+                          @Html.ActionLink("Update", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        }
+                        else
+                        {
+                          @Html.ActionLink("View", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        }
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                      @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                        @if (User.IsInRole("Admin"))
+                        {
+                          @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
 
-                    }
+                        }
 
-                    @*|
-    @Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
-                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-                  </td>
-                </tr>
+                        @*|
+                          @Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                      </td>
+                    </tr>
                   }
 
                 </table>
@@ -229,19 +229,19 @@
         {
           extend: 'copyHtml5',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
           }
         },
         {
           extend: 'csvHtml5',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
           }
         },
         {
           extend: 'excelHtml5',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
           }
         },
         {
@@ -249,13 +249,13 @@
           orientation: 'landscape',
           pageSize: 'LEGAL',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
           }
         },
         {
           extend: 'print',
           exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
           }
         },
         'colvis'

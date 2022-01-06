@@ -39,14 +39,16 @@
                   <thead>
                     <tr>
                       <th>
-                        @Html.DisplayNameFor(model => model.LocationName)
+                        @*@Html.DisplayNameFor(model => model.LocationName)*@
+                        Name
                       </th>
                       <th>
-                        @Html.DisplayNameFor(model => model.LocationId)
+                        @*@Html.DisplayNameFor(model => model.LocationId)*@
+                        Id
                       </th>
-                      <th>
+                      @*<th>
                         @Html.DisplayNameFor(model => model.Remarks)
-                      </th>
+                      </th>*@
                       @*<th>
                           @Html.DisplayNameFor(model => model.DateCreated)
                         </th>
@@ -65,9 +67,9 @@
                       <td>
                         @Html.DisplayFor(modelItem => item.LocationId)
                       </td>
-                      <td>
+                      @*<td>
                         @Html.DisplayFor(modelItem => item.Remarks)
-                      </td>
+                      </td>*@
                       @*<td>
                           @Html.DisplayFor(modelItem => item.DateCreated)
                         </td>

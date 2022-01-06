@@ -44,7 +44,7 @@ namespace LeaveON.Controllers
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin,Manager")]
-    public async Task<ActionResult> Create([Bind(Include = "Id,AspNetUserId,Barcode,SerialNumber,DeviceTypeId,Manufacturer,Model,Description,ReceivingDate,WarrantyExpiryDate,LocationId,StatusId,Racked,Remarks,ItemLogId,DateCreated,DateModified")] Item item)
+    public async Task<ActionResult> Create([Bind(Include = "Id,AspNetUserId,Barcode,SerialNumber,DeviceTypeId,Manufacturer,Model,Description,ReceivingDate,WarrantyExpiryDate,LocationId,StatusId,Racked,RackId,UID,Remarks,ItemLogId,DateCreated,DateModified")] Item item)
     {
 
       item.Id = Guid.NewGuid().ToString();
@@ -95,7 +95,7 @@ namespace LeaveON.Controllers
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin,Manager")]
-    public async Task<ActionResult> Edit([Bind(Include = "Id,AspNetUserId,Barcode,SerialNumber,DeviceTypeId,Manufacturer,Model,Description,ReceivingDate,WarrantyExpiryDate,LocationId,StatusId,Racked,Remarks,ItemLogId,DateCreated,DateModified")] Item item)
+    public async Task<ActionResult> Edit([Bind(Include = "Id,AspNetUserId,Barcode,SerialNumber,DeviceTypeId,Manufacturer,Model,Description,ReceivingDate,WarrantyExpiryDate,LocationId,StatusId,Racked,RackId,UID,Remarks,ItemLogId,DateCreated,DateModified")] Item item)
     {
       //Get Orignal value before save changes // this code working fine but not needed as done by in only one line.
       //Item entityBeforeChange = db.Items.Single(x => x.Id == item.Id);

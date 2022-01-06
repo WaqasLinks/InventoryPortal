@@ -746,7 +746,7 @@ namespace LeaveON.Controllers
         return Redirect(returnUrl);
       }
       //return RedirectToAction("Index", "Leads");
-      return RedirectToAction("Index", "Items");
+      return RedirectToAction("Index", "Dashboard");
     }
 
     internal class ChallengeResult : HttpUnauthorizedResult
