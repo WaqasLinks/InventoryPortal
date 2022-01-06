@@ -85,7 +85,10 @@ namespace LeaveON.Controllers
       ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type", item.DeviceTypeId);
       ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName", item.LocationId);
       ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName", item.StatusId);
-      TempData["orignalLocation"] = db.Locations.Single(x => x.Id == item.LocationId);
+      Location location = db.Locations.FirstOrDefault(x => x.Id == item.LocationId);
+      TempData["orignalLocation"] = location;
+      
+
       return View(item);
     }
 
@@ -111,7 +114,7 @@ namespace LeaveON.Controllers
         db.Entry(item).State = EntityState.Modified;
         db.Entry(item).Property(x => x.AspNetUserId).IsModified = false;
         db.Entry(item).Property(x => x.DateCreated).IsModified = false;
-        if (oldLocation.Id != item.LocationId)
+        if (oldLocation != null && item.LocationId != null && oldLocation.Id != item.LocationId)
         {
           //item.AspNetUserId = User.Identity.GetUserId();
           Location newLocation = db.Locations.Single(x => x.Id == item.LocationId);
