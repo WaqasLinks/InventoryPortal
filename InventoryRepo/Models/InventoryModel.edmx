@@ -97,6 +97,7 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="1000" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="DateModified" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemLog">
           <Key>
@@ -429,6 +430,7 @@
           <NavigationProperty Name="ItemLogs" Relationship="InventoryPortalModel.FK_ItemLog_Item" FromRole="Item" ToRole="ItemLog" />
           <Property Name="RackId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="UID" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemLog">
           <Key>
@@ -655,6 +657,7 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="InventoryPortalModel.Item">
               <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="UID" ColumnName="UID" />
                 <ScalarProperty Name="RackId" ColumnName="RackId" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />

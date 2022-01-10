@@ -18,15 +18,27 @@ namespace LeaveON.Controllers
     private InventoryPortalEntities db = new InventoryPortalEntities();
 
     // GET: ItemLogs
-    public  ActionResult Index()
+    public ActionResult Index()
     {
       var itemLogs = db.ItemLogs.Include(i => i.AspNetUser).Include(i => i.Item);
-      List <ActivityLogViewModel> activityLogs = new List <ActivityLogViewModel>();
+      List<ActivityLogViewModel> activityLogs = new List<ActivityLogViewModel>();
       string UserName;
+
       foreach (ItemLog itemLog in itemLogs)
       {
         UserName = db.AspNetUsers.Single(x => x.Id == itemLog.AspNetUserId).UserName;
-        activityLogs.Add(new ActivityLogViewModel { DeviceDesc = itemLog.Item.Description, ActivityByUser = UserName, ActivityDateTime = itemLog.EventDateTime.Value, ActivityDesc = itemLog.Description });
+        if (itemLog.Item != null)
+        {
+          activityLogs.Add(new ActivityLogViewModel
+          {
+            Barcode= itemLog.Item.Barcode,
+            Serial = itemLog.Item.SerialNumber,
+            DeviceDesc = itemLog.Item.Description,
+            ActivityByUser = UserName,
+            ActivityDateTime = itemLog.EventDateTime.Value,
+            ActivityDesc = itemLog.Description
+          });
+        }
       }
       return View(activityLogs);
     }

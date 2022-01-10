@@ -24,9 +24,9 @@ namespace LeaveON.Controllers
       //int policyId = db.AspNetUsers.FirstOrDefault(x => x.Id == userId).UserLeavePolicyId.GetValueOrDefault();
 
       dashboard.totalStores= db.Locations.Count();
-      dashboard.totalOprational = db.Items.Where(x => x.StatusId == "1").Count();
-      dashboard.totalDecommissioned = db.Items.Where(x => x.StatusId == "2").Count();
-      dashboard.totalDisposed = db.Items.Where(x => x.StatusId == "5").Count();
+      dashboard.totalOprational = db.Items.Where(x => x.StatusId == "1" && x.IsDeleted==false).Count();
+      dashboard.totalDecommissioned = db.Items.Where(x => x.StatusId == "2" && x.IsDeleted == false).Count();
+      dashboard.totalDisposed = db.Items.Where(x => x.StatusId == "5" && x.IsDeleted == false).Count();
 
       return View(dashboard);
 

@@ -1,0 +1,267 @@
+@model IEnumerable<InventoryRepo.Models.Item>
+
+@{
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            Devices List
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+              @Html.ActionLink("Add New", "Create", new object { }, new { @class = "btn btn-warning" })
+            }
+
+
+          </h3>
+        </div>
+
+
+        <div class="card-body">
+
+          <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+              </div>
+              <div class="col-sm-12 col-md-6"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+
+
+                <table id="example" class="display" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Barcode)
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.SerialNumber)*@
+                        Serial
+                      </th>
+
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.DeviceType)*@
+                        Type
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Manufacturer)*@
+                        Mfr.
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Model)
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Description)*@
+                        Desc
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.ReceivingDate)*@
+                        Receiving
+                      </th>
+
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.WarrantyExpiryDate)*@
+                        Warranty
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Location.LocationName)*@
+                        Location
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Location.LocationName)*@
+                        Id
+                      </th>
+                      <th>
+                        @*@Html.DisplayNameFor(model => model.Status.StatusName)*@
+                        Status
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.Racked)
+
+                      </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.RackId)
+
+                      </th>
+
+                      <th>
+                        UID
+
+                      </th>
+
+                      <th></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Barcode)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.SerialNumber)
+
+                      </td>
+
+                      <td>
+                        @Html.DisplayFor(modelItem => item.DeviceType.Type)
+
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Manufacturer)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Model)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.ReceivingDate)
+
+                      </td>
+
+                      <td>
+                        @Html.DisplayFor(modelItem => item.WarrantyExpiryDate)
+
+                      </td>
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Location.LocationName)
+
+                      </td>
+                      <td>
+
+                        @Html.DisplayFor(modelItem => item.Location.LocationId)
+                      </td>
+
+                      <td>
+                        @Html.DisplayFor(modelItem => item.Status.StatusName)
+
+                      </td>
+                      <td>
+                        @*@Html.DisplayFor(modelItem => item.Racked)*@
+                        @(item.Racked? "Yes":"No")
+
+                      </td>
+                      <td>
+
+                        @Html.DisplayFor(modelItem => item.RackId)
+
+                      </td>
+                      <td>
+
+                        @Html.DisplayFor(modelItem => item.UID)
+                      </td>
+
+
+                      <td>
+                        @*<a href="/Products/Create" id="createProduct" class="btn btn-info "><i class=""></i> New Product</a> |*@
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+
+                        @Html.ActionLink("Update", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        }
+                        else
+                        {
+                        @Html.ActionLink("View", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+
+                        }
+
+                        @*|
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@*<script src="https://code.jquery.com/jquery-3.5.1.js"></script>*@
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+    $('#example').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "pageLength": 100,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+      "order": [[0, "desc"]],
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+          }
+        },
+        {
+          extend: 'csvHtml5',
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+          }
+        },
+        {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+          }
+        },
+        {
+          extend: 'pdfHtml5',
+          orientation: 'landscape',
+          pageSize: 'LEGAL',
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+          }
+        },
+        {
+          extend: 'print',
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+          }
+        },
+        'colvis'
+      ]
+
+    });
+  });
+</script>

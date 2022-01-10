@@ -21,7 +21,7 @@ namespace LeaveON.Controllers
     // GET: Items
     public async Task<ActionResult> Index()
     {
-      var items = db.Items.Include(i => i.AspNetUser).Include(i => i.DeviceType).Include(i => i.Location).Include(i => i.Status);
+      var items = db.Items.Where(x => x.IsDeleted == false).Include(i => i.AspNetUser).Include(i => i.DeviceType).Include(i => i.Location).Include(i => i.Status);
       return View(await items.ToListAsync());
     }
 
@@ -85,9 +85,9 @@ namespace LeaveON.Controllers
       ViewBag.DeviceTypeId = new SelectList(db.DeviceTypes, "Id", "Type", item.DeviceTypeId);
       ViewBag.LocationId = new SelectList(db.Locations, "Id", "LocationName", item.LocationId);
       ViewBag.StatusId = new SelectList(db.Status, "Id", "StatusName", item.StatusId);
-      Location location = db.Locations.FirstOrDefault(x => x.Id == item.LocationId);
-      TempData["orignalLocation"] = location;
-      
+      Item orginalItem = db.Items.FirstOrDefault(x => x.Id == item.Id);
+      TempData["orginalItem"] = orginalItem;
+
 
       return View(item);
     }
@@ -105,7 +105,7 @@ namespace LeaveON.Controllers
       //db.Entry(entityBeforeChange).State = EntityState.Detached; // breaks up the connection to the Context
       //Location oldLocation = db.Locations.Single(x => x.Id == entityBeforeChange.LocationId);//Orignal value
 
-      Location oldLocation = (Location)TempData["orignalLocation"];
+      Item orginalItem = (Item)TempData["orginalItem"];
 
 
       item.DateModified = DateTime.Now;
@@ -114,21 +114,139 @@ namespace LeaveON.Controllers
         db.Entry(item).State = EntityState.Modified;
         db.Entry(item).Property(x => x.AspNetUserId).IsModified = false;
         db.Entry(item).Property(x => x.DateCreated).IsModified = false;
-        if (oldLocation != null && item.LocationId != null && oldLocation.Id != item.LocationId)
+
+
+        if (orginalItem != null)
         {
           //item.AspNetUserId = User.Identity.GetUserId();
-          Location newLocation = db.Locations.Single(x => x.Id == item.LocationId);
-          ItemLog itemLog = new ItemLog
+          //Location newLocation = db.Locations.Single(x => x.Id == item.LocationId);
+          ItemLog itemLog;
+          
+
+          //Barcode changed
+          if (item.Barcode != orginalItem.Barcode)
           {
-            Id = Guid.NewGuid().ToString(),
-            AspNetUserId = User.Identity.GetUserId(),
-            Description = oldLocation.LocationName + " → " +
-            item.Location.LocationName,
-            EventDateTime = DateTime.Now,
-            ItemId = item.Id
-          };
-          db.ItemLogs.Add(itemLog);
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Barcode: " + orginalItem.Barcode + " → " + item.Barcode, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //Description changed
+          if (item.Description != orginalItem.Description)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Description: " + orginalItem.Description + " → " + item.Description, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //DeviceType changed
+          if (item.DeviceTypeId != orginalItem.DeviceTypeId)
+          {
+            DeviceType deviceType = db.DeviceTypes.Find(item.DeviceTypeId);
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Device Type: " + orginalItem.DeviceType.Type + " → " + deviceType.Type, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //Location changed
+          if (item.LocationId != orginalItem.LocationId)
+          {
+            Location location= db.Locations.Find(item.LocationId);
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Location: " + orginalItem.Location.LocationName + " → " + location.LocationName, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //Manufacturer changed
+          if (item.Manufacturer != orginalItem.Manufacturer)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Manufacturer: " + orginalItem.Manufacturer + " → " + item.Manufacturer, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //Model changed
+          if (item.Model != orginalItem.Model)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Model: " + orginalItem.Model + " → " + item.Model, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //Racked changed
+          if (item.Racked != orginalItem.Racked)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Racked: " + (orginalItem.Racked ? "Yes" : "No") + " → " + (item.Racked ? "Yes" : "No"), EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //RackId changed
+          if (item.RackId != orginalItem.RackId)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "RackId: " + orginalItem.RackId + " → " + item.RackId, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //ReceivingDate changed
+          if (item.ReceivingDate != orginalItem.ReceivingDate)
+          {
+            //itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Receiving: " + orginalItem.ReceivingDate.Value.ToString("dd MMM yyyy") + " → " + item.ReceivingDate.Value.ToString("dd MMM yyyy"), EventDateTime = DateTime.Now, ItemId = item.Id };
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "ReceivingDate: " + (orginalItem.ReceivingDate.HasValue ? orginalItem.ReceivingDate.Value.ToString("dd MMM yyyy") : string.Empty) + " → " + (item.ReceivingDate.HasValue ? item.ReceivingDate.Value.ToString("dd MMM yyyy") : string.Empty), EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //Remarks changed
+          if (item.Remarks != orginalItem.Remarks)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Remarks: " + orginalItem.Remarks + " → " + item.Remarks, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //SerialNumber changed
+          if (item.SerialNumber != orginalItem.SerialNumber)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Serial: " + orginalItem.SerialNumber + " → " + item.SerialNumber, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //StatusName changed
+          if (item.StatusId != orginalItem.StatusId)
+          {
+            Status status= db.Status.Find(item.StatusId);
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Status: " + orginalItem.Status.StatusName + " → " + status.StatusName, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //UID changed
+          if (item.UID != orginalItem.UID)
+          {
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "UID: " + orginalItem.UID + " → " + item.UID, EventDateTime = DateTime.Now, ItemId = item.Id };
+            db.ItemLogs.Add(itemLog);
+          }
+
+          //WarrantyExpiryDate changed
+          if (item.WarrantyExpiryDate != orginalItem.WarrantyExpiryDate)
+          {
+
+            //if (orginalItem.WarrantyExpiryDate != null ||  orginalItem.WarrantyExpiryDate.Value != null)
+            //{
+
+            //}
+
+            //if (item.WarrantyExpiryDate != null || item.WarrantyExpiryDate.Value != null)
+            //{
+
+            //}
+
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "WarrantyExpiryDate: " + (orginalItem.WarrantyExpiryDate.HasValue ? orginalItem.WarrantyExpiryDate.Value.ToString("dd MMM yyyy") : string.Empty) + " → " + (item.WarrantyExpiryDate.HasValue ? item.WarrantyExpiryDate.Value.ToString("dd MMM yyyy") : string.Empty), EventDateTime = DateTime.Now, ItemId = item.Id };
+
+            db.ItemLogs.Add(itemLog);
+          }
+         
+
+
+
+
         }
+
+
+
+
+
         await db.SaveChangesAsync();
         return RedirectToAction("Index");
       }
@@ -162,7 +280,13 @@ namespace LeaveON.Controllers
     public async Task<ActionResult> DeleteConfirmed(string id)
     {
       Item item = await db.Items.FindAsync(id);
-      db.Items.Remove(item);
+      //db.Items.Remove(item);
+      item.IsDeleted = true;
+      db.Entry(item).State = EntityState.Modified;
+      db.Entry(item).Property(x => x.IsDeleted).IsModified = true;
+
+      ItemLog itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Device Deleted", EventDateTime = DateTime.Now, ItemId = item.Id };
+      db.ItemLogs.Add(itemLog);
       await db.SaveChangesAsync();
       return RedirectToAction("Index");
     }

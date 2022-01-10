@@ -877,8 +877,8 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      @*<section class="content-header">
-          <div class="container-fluid">
+      <section class="content-header">
+          @*<div class="container-fluid">
             <div class="row mb-2">
               <div class="col-sm-6">
 
@@ -890,19 +890,14 @@
                 </ol>
               </div>
             </div>
-          </div>
-        </section>*@
+          </div>*@
+        </section>
 
       <!-- Main content -->
-      <section class="content">
-        <div class="container-fluid">
-          <div class="row">
+      
             @RenderBody()
             @RenderSection("SPAViews", required: false)
-          </div>
-          <!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </section>
+      
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->

@@ -38,6 +38,7 @@ namespace InventoryRepo.Models
         public Nullable<System.DateTime> DateModified { get; set; }
         public string RackId { get; set; }
         public string UID { get; set; }
+        public bool IsDeleted { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual DeviceType DeviceType { get; set; }
