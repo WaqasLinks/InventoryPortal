@@ -20,184 +20,184 @@
     {
       @Html.AntiForgeryToken()
 
-  <div class="card-body">
+      <div class="card-body">
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.AspNetUserId)
-    @*<div class="form-group">
-      @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AspNetUserId)
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "" })
 
-      @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
 
-    </div>*@
+          </div>*@
 
-    @*<div class="form-group">
-      @Html.LabelFor(model => model.AspNetUserId, "AspNetUserId", htmlAttributes: new { @class = "" })
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.AspNetUserId, "AspNetUserId", htmlAttributes: new { @class = "" })
 
-      @Html.DropDownList("AspNetUserId", null, htmlAttributes: new { @class = "form-control" })
-      @Html.ValidationMessageFor(model => model.AspNetUserId, "", new { @class = "text-danger" })
+            @Html.DropDownList("AspNetUserId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.AspNetUserId, "", new { @class = "text-danger" })
 
-    </div>*@
+          </div>*@
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.Barcode, htmlAttributes: new { @class = "" })
+        <div class="form-group required">
+          @Html.LabelFor(model => model.Barcode, htmlAttributes: new { @class = "control-label" })
 
-      @Html.EditorFor(model => model.Barcode, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.Barcode, "", new { @class = "text-danger" })
+          @Html.EditorFor(model => model.Barcode, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+          @Html.ValidationMessageFor(model => model.Barcode, "", new { @class = "text-danger" })
 
-    </div>
+        </div>
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.SerialNumber, htmlAttributes: new { @class = "" })
+        <div class="form-group required">
+          @Html.LabelFor(model => model.SerialNumber, htmlAttributes: new { @class = "control-label" })
 
-      @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.SerialNumber, "", new { @class = "text-danger" })
+          @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+          @Html.ValidationMessageFor(model => model.SerialNumber, "", new { @class = "text-danger" })
 
-    </div>
+        </div>
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.DeviceTypeId, "DeviceType", htmlAttributes: new { @class = "" })
-      
-      @*@Html.EditorFor(model => model.DeviceTypeId, new { htmlAttributes = new { @class = "form-control" } })*@
-      @Html.DropDownList("DeviceTypeId", null, "---Select---", htmlAttributes: new { @class = "form-control" })
-      @Html.ValidationMessageFor(model => model.DeviceTypeId, "", new { @class = "text-danger" })
+        <div class="form-group">
+          @Html.LabelFor(model => model.DeviceTypeId, "DeviceType", htmlAttributes: new { @class = "" })
 
-    </div>
+          @*@Html.EditorFor(model => model.DeviceTypeId, new { htmlAttributes = new { @class = "form-control" } })*@
+          @Html.DropDownList("DeviceTypeId", null, "---Select---", htmlAttributes: new { @class = "form-control" })
+          @Html.ValidationMessageFor(model => model.DeviceTypeId, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.Manufacturer, htmlAttributes: new { @class = "" })
+        </div>
 
-      @Html.EditorFor(model => model.Manufacturer, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.Manufacturer, "", new { @class = "text-danger" })
+        <div class="form-group">
+          @Html.LabelFor(model => model.Manufacturer, htmlAttributes: new { @class = "" })
 
-    </div>
+          @Html.EditorFor(model => model.Manufacturer, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.Manufacturer, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.Model, htmlAttributes: new { @class = "" })
+        </div>
 
-      @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
+        <div class="form-group">
+          @Html.LabelFor(model => model.Model, htmlAttributes: new { @class = "" })
 
-    </div>
+          @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
+        </div>
 
-      @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        <div class="form-group">
+          @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
 
-    </div>
+          @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.ReceivingDate, htmlAttributes: new { @class = "" })
+        </div>
 
-      @Html.EditorFor(model => model.ReceivingDate, new { htmlAttributes = new { @class = "form-control", @id = "ReceivingDate" } })
-      @Html.ValidationMessageFor(model => model.ReceivingDate, "", new { @class = "text-danger" })
+        <div class="form-group">
+          @Html.LabelFor(model => model.ReceivingDate, htmlAttributes: new { @class = "" })
 
-    </div>
+          @Html.EditorFor(model => model.ReceivingDate, new { htmlAttributes = new { @class = "form-control", @id = "ReceivingDate" } })
+          @Html.ValidationMessageFor(model => model.ReceivingDate, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.WarrantyExpiryDate, htmlAttributes: new { @class = "" })
+        </div>
 
-      @Html.EditorFor(model => model.WarrantyExpiryDate, new { htmlAttributes = new { @class = "form-control", @id = "WarrantyExpiryDate" } })
-      @Html.ValidationMessageFor(model => model.WarrantyExpiryDate, "", new { @class = "text-danger" })
+        <div class="form-group">
+          @Html.LabelFor(model => model.WarrantyExpiryDate, htmlAttributes: new { @class = "" })
 
-    </div>
+          @Html.EditorFor(model => model.WarrantyExpiryDate, new { htmlAttributes = new { @class = "form-control", @id = "WarrantyExpiryDate" } })
+          @Html.ValidationMessageFor(model => model.WarrantyExpiryDate, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.LocationId, "Location", htmlAttributes: new { @class = "" })
-      
-      @Html.DropDownList("LocationId", null, "---Select---", htmlAttributes: new { @class = "form-control" })
-      @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
 
-    </div>
+        <div class="form-group">
+          @Html.LabelFor(model => model.LocationId, "Location", htmlAttributes: new { @class = "" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.StatusId, "Status", htmlAttributes: new { @class = "" })
-      
-      @Html.DropDownList("StatusId", null, "---Select---", htmlAttributes: new { @class = "form-control" })
-      @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+          @Html.DropDownList("LocationId", null, "---Select---", htmlAttributes: new { @class = "form-control" })
+          @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
 
-    </div>
+        </div>
 
-    <div class="form-group">
+        <div class="form-group">
+          @Html.LabelFor(model => model.StatusId, "Status", htmlAttributes: new { @class = "" })
 
+          @Html.DropDownList("StatusId", null, "---Select---", htmlAttributes: new { @class = "form-control" })
+          @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
 
+        </div>
+
+        <div class="form-group">
 
 
-      @Html.EditorFor(model => model.Racked)
-      @Html.LabelFor(model => model.Racked, htmlAttributes: new { @class = "" })
-      @Html.ValidationMessageFor(model => model.Racked, "", new { @class = "text-danger" })
 
 
-    </div>
-    <div class="form-group RackedFields">
-      @Html.LabelFor(model => model.RackId, htmlAttributes: new { @class = "" })
+          @Html.EditorFor(model => model.Racked)
+          @Html.LabelFor(model => model.Racked, htmlAttributes: new { @class = "" })
+          @Html.ValidationMessageFor(model => model.Racked, "", new { @class = "text-danger" })
 
-      @Html.EditorFor(model => model.RackId, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.RackId, "", new { @class = "text-danger" })
 
-    </div>
+        </div>
+        <div class="form-group RackedFields">
+          @Html.LabelFor(model => model.RackId, htmlAttributes: new { @class = "" })
 
-    <div class="form-group RackedFields">
-      @Html.LabelFor(model => model.UID, htmlAttributes: new { @class = "" })
+          @Html.EditorFor(model => model.RackId, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.RackId, "", new { @class = "text-danger" })
 
-      @Html.EditorFor(model => model.UID, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.UID, "", new { @class = "text-danger" })
+        </div>
 
-    </div>
-    <div class="form-group">
-      @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+        <div class="form-group RackedFields">
+          @Html.LabelFor(model => model.UID, htmlAttributes: new { @class = "" })
 
-      @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+          @Html.EditorFor(model => model.UID, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.UID, "", new { @class = "text-danger" })
 
-    </div>
+        </div>
+        <div class="form-group">
+          @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
 
-    @*<div class="form-group">
-      @Html.LabelFor(model => model.ItemLogId, "ItemLogId", htmlAttributes: new { @class = "" })
+          @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+          @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
 
-      @Html.DropDownList("ItemLogId", null, htmlAttributes: new { @class = "form-control" })
-      @Html.ValidationMessageFor(model => model.ItemLogId, "", new { @class = "text-danger" })
+        </div>
 
-    </div>*@
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.ItemLogId, "ItemLogId", htmlAttributes: new { @class = "" })
 
-    @*<div class="form-group">
-      @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "" })
+            @Html.DropDownList("ItemLogId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ItemLogId, "", new { @class = "text-danger" })
 
-      @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
+          </div>*@
 
-    </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "" })
 
-    <div class="form-group">
-      @Html.LabelFor(model => model.DateModified, htmlAttributes: new { @class = "" })
+            @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
 
-      @Html.EditorFor(model => model.DateModified, new { htmlAttributes = new { @class = "form-control" } })
-      @Html.ValidationMessageFor(model => model.DateModified, "", new { @class = "text-danger" })
+          </div>
 
-    </div>*@
+          <div class="form-group">
+            @Html.LabelFor(model => model.DateModified, htmlAttributes: new { @class = "" })
 
-    <div class="form-group">
-      <div class="class=" card-footer">
+            @Html.EditorFor(model => model.DateModified, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DateModified, "", new { @class = "text-danger" })
 
-        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-        {
+          </div>*@
 
-        <input type="submit" value="Update" class="btn btn-info" style="width: 180px; margin-left:auto;margin-right:auto;display:block;margin-top:auto;margin-bottom:0%" />
-        }
-        
+        <div class="form-group">
+          <div class="class=" card-footer">
 
-        
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+
+              <input type="submit" value="Update" class="btn btn-info" style="width: 180px; margin-left:auto;margin-right:auto;display:block;margin-top:auto;margin-bottom:0%" />
+            }
+
+
+
+          </div>
+        </div>
+        <br />
+        <div>
+          @Html.ActionLink("Back to List", "Index")
+        </div>
       </div>
-    </div>
-    <br />
-    <div>
-      @Html.ActionLink("Back to List", "Index")
-    </div>
-  </div>
     }
 
 
@@ -208,6 +208,14 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style>
+  .form-group.required .control-label:after {
+    content: "*";
+    color: red;
+  }
+</style>
+
 <script>
   $(function () {
 
