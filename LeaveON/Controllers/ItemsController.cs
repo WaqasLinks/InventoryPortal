@@ -141,7 +141,7 @@ namespace LeaveON.Controllers
           if (item.DeviceTypeId != orginalItem.DeviceTypeId)
           {
             DeviceType deviceType = db.DeviceTypes.Find(item.DeviceTypeId);
-            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Device Type: " + orginalItem.DeviceType.Type + " → " + deviceType.Type, EventDateTime = DateTime.Now, ItemId = item.Id };
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Device Type: " + (orginalItem==null?"": orginalItem.DeviceType.Type) + " → " + (deviceType==null?"": deviceType.Type), EventDateTime = DateTime.Now, ItemId = item.Id };
             db.ItemLogs.Add(itemLog);
           }
 
@@ -149,7 +149,7 @@ namespace LeaveON.Controllers
           if (item.LocationId != orginalItem.LocationId)
           {
             Location location= db.Locations.Find(item.LocationId);
-            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Location: " + orginalItem.Location.LocationName + " → " + location.LocationName, EventDateTime = DateTime.Now, ItemId = item.Id };
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Location: " + (orginalItem.Location==null ? "": orginalItem.Location.LocationName) + " → " + (location==null?"": location.LocationName), EventDateTime = DateTime.Now, ItemId = item.Id };
             db.ItemLogs.Add(itemLog);
           }
 
@@ -207,7 +207,7 @@ namespace LeaveON.Controllers
           if (item.StatusId != orginalItem.StatusId)
           {
             Status status= db.Status.Find(item.StatusId);
-            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Status: " + orginalItem.Status.StatusName + " → " + status.StatusName, EventDateTime = DateTime.Now, ItemId = item.Id };
+            itemLog = new ItemLog { Id = Guid.NewGuid().ToString(), AspNetUserId = User.Identity.GetUserId(), Description = "Status: " + (orginalItem.Status == null? "" : orginalItem.Status.StatusName) + " → " + (status==null?"": status.StatusName), EventDateTime = DateTime.Now, ItemId = item.Id };
             db.ItemLogs.Add(itemLog);
           }
 
