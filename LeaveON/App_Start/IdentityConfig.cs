@@ -58,7 +58,7 @@ namespace LeaveON
               //RequireDigit = true,
               //RequireLowercase = true,
               //RequireUppercase = true,
-              RequiredLength = 0,
+              RequiredLength = 1,
               RequireNonLetterOrDigit = false,
               RequireDigit = false,
               RequireLowercase = false,

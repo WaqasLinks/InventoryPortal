@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DynamicForm">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FormName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="IsAutoTruncate" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DynamicFormColumns">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColumnName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="DataType" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Length" Type="int" />
+          <Property Name="Min" Type="int" />
+          <Property Name="Max" Type="int" />
+          <Property Name="IsNullable" Type="bit" Nullable="false" />
+          <Property Name="IsPrimaryKey" Type="bit" Nullable="false" />
+          <Property Name="DynamicFormId" Type="int" />
+        </EntityType>
+        <Association Name="FK_DynamicFormColumns_DynamicForm">
+          <End Role="DynamicForm" Type="Self.DynamicForm" Multiplicity="0..1" />
+          <End Role="DynamicFormColumns" Type="Self.DynamicFormColumns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DynamicForm">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DynamicFormColumns">
+              <PropertyRef Name="DynamicFormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DMSModelStoreContainer">
+          <EntitySet Name="DynamicForm" EntityType="Self.DynamicForm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DynamicFormColumns" EntityType="Self.DynamicFormColumns" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DynamicFormColumns_DynamicForm" Association="Self.FK_DynamicFormColumns_DynamicForm">
+            <End Role="DynamicForm" EntitySet="DynamicForm" />
+            <End Role="DynamicFormColumns" EntitySet="DynamicFormColumns" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DynamicForm">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FormName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TableName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsAutoTruncate" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DynamicFormColumns" Relationship="Self.FK_DynamicFormColumns_DynamicForm" FromRole="DynamicForm" ToRole="DynamicFormColumns" />
+        </EntityType>
+        <EntityType Name="DynamicFormColumn">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColumnName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DataType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Length" Type="Int32" />
+          <Property Name="Min" Type="Int32" />
+          <Property Name="Max" Type="Int32" />
+          <Property Name="IsNullable" Type="Boolean" Nullable="false" />
+          <Property Name="IsPrimaryKey" Type="Boolean" Nullable="false" />
+          <Property Name="DynamicFormId" Type="Int32" />
+          <NavigationProperty Name="DynamicForm" Relationship="Self.FK_DynamicFormColumns_DynamicForm" FromRole="DynamicFormColumns" ToRole="DynamicForm" />
+        </EntityType>
+        <Association Name="FK_DynamicFormColumns_DynamicForm">
+          <End Role="DynamicForm" Type="Self.DynamicForm" Multiplicity="0..1" />
+          <End Role="DynamicFormColumns" Type="Self.DynamicFormColumn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DynamicForm">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DynamicFormColumns">
+              <PropertyRef Name="DynamicFormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DynamicForms" EntityType="Self.DynamicForm" />
+          <EntitySet Name="DynamicFormColumns" EntityType="Self.DynamicFormColumn" />
+          <AssociationSet Name="FK_DynamicFormColumns_DynamicForm" Association="Self.FK_DynamicFormColumns_DynamicForm">
+            <End Role="DynamicForm" EntitySet="DynamicForms" />
+            <End Role="DynamicFormColumns" EntitySet="DynamicFormColumns" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DMSModelStoreContainer" CdmEntityContainer="DMSEntities">
+          <EntitySetMapping Name="DynamicForms">
+            <EntityTypeMapping TypeName="DMSModel.DynamicForm">
+              <MappingFragment StoreEntitySet="DynamicForm">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FormName" ColumnName="FormName" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="IsAutoTruncate" ColumnName="IsAutoTruncate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DynamicFormColumns">
+            <EntityTypeMapping TypeName="DMSModel.DynamicFormColumn">
+              <MappingFragment StoreEntitySet="DynamicFormColumns">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Min" ColumnName="Min" />
+                <ScalarProperty Name="Max" ColumnName="Max" />
+                <ScalarProperty Name="IsNullable" ColumnName="IsNullable" />
+                <ScalarProperty Name="IsPrimaryKey" ColumnName="IsPrimaryKey" />
+                <ScalarProperty Name="DynamicFormId" ColumnName="DynamicFormId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
