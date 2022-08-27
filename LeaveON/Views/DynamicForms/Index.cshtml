@@ -24,7 +24,10 @@
 
         </div>
         <div class="card-body">
-          @Html.ActionLink("Create New", "Create")
+          @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+          {
+            @Html.ActionLink("Add New", "Create", new object { }, new { @class = "btn btn-warning" })
+          }
           <div d="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
             <div class="row">
               <div class="col-sm-12 col-md-6">
@@ -45,7 +48,7 @@
                       </th>
                       <th class="sorting_desc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="FiscalYearStart: activate to sort column ascending">
                         @Html.DisplayNameFor(model => model.IsAutoTruncate)
-                      </th>                      
+                      </th>
                     </tr>
                   </thead>
                   @foreach (var item in Model)
@@ -61,8 +64,21 @@
                         @Html.DisplayFor(modelItem => item.IsAutoTruncate)
                       </td>
                       <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+
+                          @Html.ActionLink("Update", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        }
+                        else
+                        {
+                          @Html.ActionLink("View", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                          @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+
+                        }
                       </td>
                     </tr>
                   }

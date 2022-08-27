@@ -3,6 +3,7 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -16,7 +17,7 @@ namespace LeaveON.Controllers
   public class DataEntryFormController : Controller
   {
 
-    public string myConnectionString = "Data Source=.;Initial Catalog=DMS;User Id=sa;Password=abc;";
+    public string myConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
     // GET: DataEntryForm
     public ActionResult Index()
     {

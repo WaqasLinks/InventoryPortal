@@ -27,5 +27,6 @@ namespace DMSRepo.Models
     
         public virtual DbSet<DynamicForm> DynamicForms { get; set; }
         public virtual DbSet<DynamicFormColumn> DynamicFormColumns { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
     }
 }

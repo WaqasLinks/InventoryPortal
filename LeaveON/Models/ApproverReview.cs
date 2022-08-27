@@ -7,13 +7,17 @@ namespace LeaveON.Models
 {
   public class ApproverReview
   {
-    public string Id { get; set; }
-    public string BatchNo { get; set; }
-    public string FormTitle { get; set; }
-    public string ModifiedBy { get; set; }
-    public string ModifiedDate { get; set; }
-    public string NoOfRecords { get; set; }
-    public string ReviewStatus { get; set; }
+    //public string Id { get; set; }
+    //public string BatchNo { get; set; }
+    //public string FormTitle { get; set; }
+    //public string ModifiedBy { get; set; }
+    //public string ModifiedDate { get; set; }
+    //public string NoOfRecords { get; set; }
+    //public string ReviewStatus { get; set; }
+
+    public string FormName { get; set; }
+    public string TableName { get; set; }
+
 
   }
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Inventory Portal</title>
+  <title>InfixKYC</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -235,10 +235,10 @@
       <a href="#" class="brand-link">
         @*<img src="~/dist/img/AdminLTELogo.png"*@
         <img src="~/dist/img/ads-a.png"
-             alt="Inventory Portal"
+             alt="InfixKYC"
              class="brand-image-xl img-fluid elevation-5"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">Inventory Portal</span>
+        <span class="brand-text font-weight-light">InfixKYC</span>
       </a>
 
 
@@ -258,22 +258,28 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
-            with font-awesome or any other icon font library -->
+  with font-awesome or any other icon font library -->
             @if (User.Identity.IsAuthenticated)
             {
-              
+
               if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("User"))
               {
                 @*<li class="nav-item">
-                    <a href="/Items/Create" class="nav-link">
-                      <i class="nav-icon fa fa-plus"></i>
-                      <p>Add Device</p>
-                    </a>
-                  </li>*@
+          <a href="/Items/Create" class="nav-link">
+            <i class="nav-icon fa fa-plus"></i>
+            <p>Add Device</p>
+          </a>
+        </li>*@
                 <li class="nav-item">
                   <a href="/Dashboard/Index" class="nav-link">
                     <i class="nav-icon fa fa-chart-pie"></i>
                     <p>Dashboard</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/Projects/Index" class="nav-link">
+                    <i class="nav-icon fa fa-copy"></i>
+                    <p>Projects</p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -296,17 +302,23 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a href="/DataManualForm/Index" class="nav-link">
+                    <i class="nav-icon fa fa-i-cursor"></i>
+                    <p>Manual Etnry</p>
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a href="/ApproverReview/Index" class="nav-link">
                     <i class="nav-icon fa fa-check-double"></i>
                     <p>Approve/Review</p>
                   </a>
                 </li>
                 @*<li class="nav-item">
-                  <a href="/ItemLogs/Index" class="nav-link">
-                    <i class="nav-icon fa fa-history"></i>
-                    <p>Activity Log</p>
-                  </a>
-                </li>*@
+          <a href="/ItemLogs/Index" class="nav-link">
+            <i class="nav-icon fa fa-history"></i>
+            <p>Activity Log</p>
+          </a>
+        </li>*@
 
 
               }
@@ -318,11 +330,11 @@
               {
 
                 @*<li class="nav-item">
-                    <a href="/Account/Register" class="nav-link">
-                      <i class="nav-icon fa fa-user-plus"></i>
-                      <p>Add User</p>
-                    </a>
-                  </li>*@
+          <a href="/Account/Register" class="nav-link">
+            <i class="nav-icon fa fa-user-plus"></i>
+            <p>Add User</p>
+          </a>
+        </li>*@
                 <li class="nav-item">
                   <a href="/AspNetUsers/Index" class="nav-link">
                     <i class="nav-icon fa fa-users"></i>
@@ -509,7 +521,7 @@
       <div class="float-right d-none d-sm-block">
         <b>Version</b> 1.0.0
       </div>
-      <strong>Copyright &copy; @DateTime.Now.Year <a href="#">Inventory Portal</a>.</strong> All rights
+      <strong>Copyright &copy; @DateTime.Now.Year <a href="#">InfixKYC</a>.</strong> All rights
       reserved.
     </footer>
 

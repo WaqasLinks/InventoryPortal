@@ -1,0 +1,238 @@
+@model List<LeaveON.Models.TableName>
+@{
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+
+<!-- DataTables -->
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+
+
+<div class="col-md-12 mt-2">
+  <div class="card card-warning">
+    <div class="card-header">
+      <h3 class="card-title">Data Entry Form (Manual)</h3>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <label for="FormTitle" class="col-sm-2 col-form-label">Form Title:</label>
+        <div class="col-sm-4">
+          <select class="selectpicker form-control" id="formName" data-live-search="true">
+            <option selected value="-1">--Select Form--</option>
+            @{ foreach (var item in Model)
+              {
+                <option data-id="@item.Id" value="@item.Name">@item.FormName</option>
+              }
+            }
+
+
+          </select>
+        </div>
+
+
+        <div class="col-sm-6 text-right contentData" style="display:none;">
+          <a href="#" id="dwExcelBtn">Download Table Template</a>
+        </div>
+      </div>
+
+      <div class="contentData" style="display:none;">
+        <div class="form-group row">
+          <label for="MasterTableName" class="col-sm-2 col-form-label">Master Table Name:</label>
+          <div class="col-sm-4">
+            <span id="tableNametxt"></span>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="ManualUpload" class="col-sm-2 col-form-label">Manual Upload:</label>
+          <div class="col-sm-4">
+            <input type="checkbox" name="name" value="" />
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <label for="ExcelSheetUploadHeading" class="col-sm-6 col-form-label">Insert Data Manually</label>
+        </div>
+
+
+        <div class="mt-3" id="dynamicContent"></div>
+
+        <div class="row mt-3">
+          <div class="col-sm-3">
+            <button id="btnSubmit" class="btn btn-primary btn-block btn-sm">Submit</button>
+          </div>
+          <div class="col-md-3">
+            <button id="btnReset" class="btn btn-primary btn-block btn-sm">Reset</button>
+          </div>
+        </div>
+
+
+
+
+        <div id="fileUploadSection" class="col-sm-12 text-center"></div>
+
+        <div class="row mt-5">
+          <table id="importedTable" class="table table-striped table-hover">
+            <thead style="background-color: #007bff; color: white;">
+
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+
+
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+
+
+<script>
+    var inputDataType=[];
+  function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+  }
+
+  $("#dwExcelBtn").click(function () {
+    var tableName = $("#formName").val();
+    $.ajax({
+      url: '/DataEntryForm/GetTableColumns',
+      type: "POST",
+      data: { tableName: tableName },
+      success: function (result) {
+        var wb = XLSX.utils.book_new();
+        wb.SheetNames.push(tableName);
+        var ws_data = [result];
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        wb.Sheets[tableName] = ws;
+        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), tableName + '.xlsx');
+
+      },
+      error: function (err) {
+        console.log(err.statusText);
+      }
+    });
+
+  });
+
+  $("#formName").change(function () {
+    if ($(this).val() != "-1") {
+      $("#tableNametxt").text($(this).val());
+      $.ajax({
+        url: '/DataManualForm/GetTableColumnsWithDataType',
+        type: "POST",
+        data: { tableName: $("#formName").val() },
+        success: function (result) {
+
+          $(".contentData").show();
+          inputDataType = result;
+          for (var i = 0; i < result.length; i++) {
+           
+            let dynamicContent = `<div class="form-group row">
+            <label for="`+ result[i].ColumnName + `" class="col-sm-2 col-form-label">` + result[i].ColumnName + `:</label>
+            <div class="col-sm-4">`;
+            if (result[i].DataType == "nvarchar")
+              dynamicContent += `<input type="text" id="Column` + i + `" class="form-control" value = "" />`;
+            else if (result[i].DataType == "int")
+              dynamicContent += `<input type="number" min="0" id="Column` + i + `" class="form-control" value = "" />`;
+            else if (result[i].DataType == "decimal")
+              dynamicContent += `<input type="number" min="0" id="Column` + i + `" class="form-control" value = "" />`;
+            else if (result[i].DataType == "bit")
+              dynamicContent += `<input type="checkbox" id="Column` + i + `"  value = "" />`;
+            else if (result[i].DataType == "datetime")
+              dynamicContent += `<input type="datetime-local" id="Column` + i + `" class="form-control" value = "" />`;
+            dynamicContent += `</div></div>`
+            $("#dynamicContent").append(dynamicContent);
+          }
+        },
+        error: function (err) {
+          console.log(err.statusText);
+        }
+      });
+
+
+    }
+  });
+
+    $("#btnReset").click(function () {
+      ResetForm();
+    });
+
+    $("#btnSubmit").click(function () {
+      for (var valid = 0; valid < $("#dynamicContent input").length; valid++) {
+        if (inputDataType[valid].DataType != 'bit')
+          if ($("#Column" + valid).val() == '') return alert('Please Fill All Fields.');
+      }
+
+
+    var inputArray = [];
+      for (var i = 0; i < $("#dynamicContent input").length; i++) {
+        if (inputDataType[i].DataType == 'bit') inputArray.push($("#Column" + i).is(':checked'));
+        else inputArray.push($("#Column" + i).val());
+    }
+    $.ajax({
+      url: '/DataManualForm/SubmitData',
+      type: "POST",
+      data: { inputData: inputArray, inputDataType: inputDataType, tableName: $("#formName").val() },
+      success: function (result) {
+        if (result.result == "Success") {
+          $("#importedTable thead").html('');
+          for (var col = 0; col < inputDataType.length; col++) {
+            $("#importedTable thead").append('<th scope="col">' + inputDataType[col].ColumnName + '</th>');
+          }
+          $("#importedTable tbody").append('<tr>');
+          for (var rows = 0; rows < inputArray.length; rows++) {
+            $("#importedTable tbody").append('<td>' + inputArray[rows] + '</td>');
+          }
+          $("#importedTable tbody").append('</tr>');
+
+          ResetForm();
+        } else {
+          alert("Something Went Wrong.");
+        }
+       
+        
+      },
+      error: function (err) {
+        console.log(err.statusText);
+      }
+    });
+  });
+
+
+    function ResetForm(){
+      for (var i = 0; i < $("#dynamicContent input").length; i++) {
+        if (inputDataType[i].DataType == 'bit') $("#Column" + i).prop('checked',false);
+        else $("#Column" + i).val('');
+      }
+    }
+</script>
+

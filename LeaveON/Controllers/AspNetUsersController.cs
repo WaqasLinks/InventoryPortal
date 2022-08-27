@@ -100,7 +100,7 @@ namespace LeaveON.Controllers
       List<SelectListItem> UserTypes = new List<SelectListItem>()
       {
           new SelectListItem{Text = "Admin", Value = "1"},
-          new SelectListItem{Text = "Manager", Value = "2"},
+          //new SelectListItem{Text = "Manager", Value = "2"},
           new SelectListItem{Text = "User", Value = "3"}
       };
 

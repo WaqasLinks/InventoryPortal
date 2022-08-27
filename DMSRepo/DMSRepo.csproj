@@ -72,6 +72,9 @@
     <Compile Include="Models\DynamicFormColumn.cs">
       <DependentUpon>DMSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Project.cs">
+      <DependentUpon>DMSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
